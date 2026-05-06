@@ -83,15 +83,17 @@
     opacity:0;pointer-events:none;transition:opacity .25s;
   }
   .menu-overlay.open{opacity:1;pointer-events:auto}
+  /* drawer uses physical right:0 (NOT inset-inline-end) so translateX hides it in RTL too */
   .drawer{
-    position:fixed;top:0;bottom:0;inset-inline-end:0;z-index:90;
+    position:fixed;top:0;bottom:0;right:0;z-index:90;
     width:min(86vw,360px);background:#fff;
     transform:translateX(100%);
     transition:transform .3s ease;
     display:flex;flex-direction:column;
     box-shadow:-20px 0 40px rgba(0,0,0,0.18);
+    visibility:hidden;
   }
-  .drawer.open{transform:translateX(0)}
+  .drawer.open{transform:translateX(0);visibility:visible}
   .drawer-head{
     display:flex;align-items:center;justify-content:space-between;
     height:80px;padding:0 22px;border-bottom:1px solid var(--border-light);
@@ -137,7 +139,7 @@
     font-family:'IBM Plex Sans',sans-serif;
   }
   .hero-title{
-    color:#fff;font-size:clamp(36px,5.2vw,62px);
+    color:#fff;font-size:clamp(28px,6vw,64px);
     font-weight:700;line-height:1.1;
     max-width:900px;margin-bottom:36px;text-wrap:balance;
   }
@@ -167,7 +169,7 @@
   }
   .split-eyebrow .dot{color:var(--red);font-size:18px;line-height:0}
   .split-headline{
-    font-size:44px;font-weight:700;line-height:1.15;color:var(--text);
+    font-size:clamp(24px,4vw,44px);font-weight:700;line-height:1.15;color:var(--text);
     margin-bottom:24px;text-wrap:balance;
   }
   .split-headline .accent{color:var(--red)}
@@ -439,101 +441,153 @@
   .footer-bottom .right{display:flex;align-items:center;gap:14px;font-family:'IBM Plex Mono',monospace}
 
   /* ─────────── responsive ─────────── */
-  @media (max-width:1024px){
-    .hero-title{font-size:42px}
-    .split{height:auto}
-    .split-text{position:relative;width:100%;padding:64px 32px;padding-inline-start:32px;padding-inline-end:32px}
-    .split-text-inner{padding:0;max-width:none}
-    .split-img{position:relative;width:100%;height:280px;inset-inline-start:auto;clip-path:polygon(0 0, 100% 0, 100% 92%, 0% 100%)}
-    .split-headline{font-size:34px}
-    .split-stat .num{font-size:64px}
-    .services-grid{grid-template-columns:1fr;gap:48px}
-    .laptop{max-width:520px;margin:0 auto}
-    .updates-grid{grid-template-columns:repeat(2,1fr)}
-    .upd-card.span2{grid-column:span 2}
-    .showcase-grid{grid-template-columns:repeat(2,1fr)}
-    .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  /* DESKTOP (≥1024px) — explicit hide rules so mobile chrome cannot leak through */
+  @media (min-width:1024px){
+    .menu-btn{display:none !important}
+    .menu-overlay{display:none !important}
+    .drawer{display:none !important}
+    .nav{display:flex !important}
   }
-  @media (max-width:768px){
+
+  /* TABLET + MOBILE (<1024px) — hamburger replaces inline nav */
+  @media (max-width:1023px){
     .nav{display:none}
     .menu-btn{display:inline-flex}
     .site-header{height:64px}
     .logo-wrap{height:38px}
     .logo-wrap img{height:28px}
     .header-inner{padding:0 16px}
-    .container{padding:0 18px}
-    .hero{height:auto;min-height:560px;padding:96px 0 88px}
+
+    .split{height:auto}
+    .split-text{
+      position:relative;width:100%;
+      padding:48px 32px;
+    }
+    .split-text-inner{padding:0;max-width:none}
+    .split-img{
+      position:relative;width:100%;height:280px;
+      clip-path:none;
+    }
+    .split-stat .num{font-size:64px}
+
+    .services-grid{grid-template-columns:1fr;gap:48px}
+    .laptop{max-width:520px;margin:0 auto}
+
+    .updates-grid{grid-template-columns:repeat(2,1fr)}
+    .upd-card.span2{grid-column:span 2}
+
+    .showcase-grid{grid-template-columns:repeat(2,1fr)}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  }
+
+  /* MOBILE (<768px) */
+  @media (max-width:767px){
+    .container{padding:0 16px}
+
+    /* hero */
+    .hero{height:60vh;min-height:480px;padding:48px 0}
+    .hero-content{padding:0 16px}
     .hero-eyebrow{font-size:10px;margin-bottom:14px}
-    .hero-title{font-size:30px;line-height:1.18;margin-bottom:28px;padding:0 4px}
-    .hero-actions{flex-direction:column;width:100%;max-width:320px;gap:10px}
-    .hero-actions .pill{width:100%;padding:14px 22px}
-    .hero-dots{bottom:22px;gap:10px}
-    .split-text{padding:48px 22px}
-    .split-headline{font-size:26px}
-    .split-body{font-size:14px}
-    .split-stat .num{font-size:54px}
-    .split-stat{margin-bottom:24px}
-    .split-cta-row{flex-direction:column;align-items:stretch;gap:18px}
-    .split-cta-row .pill{justify-content:center;width:100%}
+    .hero-title{margin-bottom:28px;padding:0 4px}
+    .hero-actions{flex-direction:column;width:100%;max-width:320px;gap:12px}
+    .hero-actions .pill{width:100%;padding:14px 22px;min-height:44px}
+    .hero-dots{bottom:18px;gap:10px}
+    .hero-dot{width:6px;height:6px}
+    .hero-dot.active{width:8px;height:8px}
+
+    /* split */
+    .split-text{padding:32px 16px}
     .split-img{height:240px}
-    .services{padding:72px 0}
+    .split-body{font-size:14px}
+    .split-stat{margin-bottom:24px;gap:14px}
+    .split-stat .num{font-size:64px}
+    .split-cta-row{flex-direction:column;align-items:stretch;gap:18px}
+    .split-cta-row .pill{justify-content:center;width:100%;min-height:44px}
+
+    /* services */
+    .services{padding:48px 0}
     .section-eyebrow{margin-bottom:32px;font-size:11px}
     .services-grid{gap:36px}
-    .laptop{padding:10px 10px 14px;max-width:100%}
-    .service{grid-template-columns:40px 1fr;gap:14px}
-    .service-icon{width:40px;height:40px}
+    .laptop{max-width:360px;padding:10px 10px 14px}
+    .service{grid-template-columns:1fr;gap:10px;justify-items:flex-start}
+    .service-icon{width:40px;height:40px;justify-self:flex-start}
     .service-icon svg{width:30px;height:30px}
-    .service-title{font-size:18px}
-    .service-body{font-size:13px}
-    .service-list{gap:28px}
+    .service-title{font-size:clamp(18px,5vw,22px)}
+    .service-body{font-size:14px}
+    .service-list{gap:32px}
     .services-cta{margin-top:32px}
-    .services-cta .pill{display:block;text-align:center}
-    .ticker-label{padding:0 14px;font-size:11px}
+    .services-cta .pill{display:flex;justify-content:center;width:100%;min-height:44px}
+
+    /* ticker */
+    .ticker{height:32px}
+    .ticker-label{padding:0 12px;font-size:11px}
     .ticker-item{font-size:12px}
-    .updates{padding:64px 0}
+    .ticker-track{gap:32px;padding-inline:20px}
+
+    /* updates */
+    .updates{padding:48px 0}
     .updates-head{margin-bottom:24px;flex-wrap:wrap;gap:12px}
-    .updates-grid{grid-template-columns:1fr;gap:14px}
+    .updates-grid{grid-template-columns:1fr;gap:16px}
     .upd-card.span2{grid-column:span 1}
     .upd-card-red{padding:32px;min-height:220px}
-    .upd-card-red h3{font-size:24px}
+    .upd-card-red h3{font-size:clamp(20px,5.5vw,28px)}
     .upd-text{padding:24px;gap:12px}
-    .upd-text h4{font-size:17px}
+    .upd-text h4{font-size:clamp(16px,4.5vw,20px)}
+    .upd-text .pill{min-height:40px}
     .upd-img{height:240px;padding:22px}
     .upd-img h4{font-size:18px}
+    .upd-img .pill{min-height:40px}
     .event-img{height:150px}
     .event-body{padding:18px 18px 22px;margin-top:-20px}
     .event-name{font-size:16px}
-    .statband{height:300px}
-    .statband .num{font-size:64px;margin-bottom:14px}
+
+    /* stat band */
+    .statband{height:280px}
+    .statband .container{padding:0 16px}
+    .statband .num{font-size:clamp(64px,16vw,96px);margin-bottom:14px}
     .statband .ar{font-size:18px}
     .statband .en{font-size:12px}
-    .partners{padding:56px 0}
-    .partners-row{gap:28px 32px;margin-top:32px}
-    .partner-logo{font-size:17px}
-    .partners-arrows{margin-top:24px}
-    .showcase{padding:64px 0}
+
+    /* partners — horizontal scroll w/ snap on mobile */
+    .partners{padding:48px 0}
+    .partners-row{
+      flex-wrap:nowrap;justify-content:flex-start;
+      overflow-x:auto;gap:32px;
+      margin-top:32px;padding:0 16px 8px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .partners-row::-webkit-scrollbar{display:none}
+    .partner-logo{font-size:14px;flex-shrink:0;scroll-snap-align:start}
+    .partners-arrows{margin-top:20px;gap:8px}
+    .partners-arrow{width:34px;height:34px}
+    .partners-arrow svg{width:14px;height:14px}
+
+    /* showcase */
+    .showcase{padding:48px 0}
     .showcase-grid{grid-template-columns:1fr;gap:28px}
     .show-card-red{padding:24px}
-    .show-card-red h4{font-size:18px}
+    .show-card-red h4{font-size:clamp(18px,5vw,22px)}
     .show-img-overlay{padding:20px}
     .show-img-overlay h4{font-size:15px}
+
+    /* footer */
     .footer-top{height:auto;padding:14px 0}
-    .footer-top .container{flex-direction:column;align-items:flex-start;gap:10px}
-    .footer-top img{height:16px}
+    .footer-top .container{flex-direction:column;align-items:center;gap:10px;text-align:center}
+    .footer-top img{height:18px}
     .footer-top .tag{font-size:11px}
     .footer-grid{grid-template-columns:1fr;gap:36px}
     .footer-main{padding:48px 0 40px}
     .footer-brand img{height:30px;margin-bottom:18px}
-    .footer-bottom{height:auto;padding:14px 0}
-    .footer-bottom .container{flex-direction:column;gap:10px;text-align:center}
-    .footer-bottom .links{flex-wrap:wrap;justify-content:center;gap:14px}
+    .footer-contact-block .pill{width:100%;justify-content:center;min-height:40px}
+    .footer-bottom{height:auto;padding:12px 0}
+    .footer-bottom .container{flex-direction:column;gap:8px;text-align:center;font-size:10px}
+    .footer-bottom .links{flex-wrap:wrap;justify-content:center;gap:12px}
   }
   @media (max-width:380px){
-    .hero-title{font-size:26px}
-    .split-headline{font-size:22px}
-    .split-stat .num{font-size:46px}
-    .upd-card-red h3{font-size:20px}
-    .statband .num{font-size:54px}
+    .upd-card-red{padding:24px}
+    .partner-logo{font-size:13px}
   }
 </style>
 </head>
@@ -604,6 +658,7 @@
 
 <!-- 3. DIAGONAL SPLIT -->
 <section class="split" id="split">
+  <div class="split-img" id="split-img" style="background-image:url('https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg')"></div>
   <div class="split-text">
     <div class="split-text-inner">
       <div class="split-eyebrow"><span>راوي ينقل القصة · </span><span class="lat">RAWI TELLS THE STORY</span><span class="dot">·</span></div>
@@ -628,7 +683,6 @@
       </div>
     </div>
   </div>
-  <div class="split-img" id="split-img" style="background-image:url('https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg')"></div>
 </section>
 
 <!-- 4. SERVICES -->
