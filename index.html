@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>راوي برس · صناعة المحتوى الإخباري للمنطقة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  /* ─────────── tokens ─────────── */
+  :root{
+    --white:#ffffff;
+    --offwhite:#f5f5f5;
+    --light:#f8f8f8;
+    --border-light:#eeeeee;
+    --border-medium:#e5e5e5;
+    --black:#0a0a0a;
+    --text:#1a1a1a;
+    --text-2:#555555;
+    --text-3:#999999;
+    --red:#c8202a;
+    --red-hover:#9b1520;
+    --red-soft:rgba(200,32,42,0.92);
+    --red-deep:#7a1015;
+    --red-deeper:#5e0c10;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--white);color:var(--text);font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  .lat{font-family:'IBM Plex Sans',sans-serif;direction:ltr;display:inline-block}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .container{max-width:1280px;margin:0 auto;padding:0 32px}
+
+  /* ─────────── header ─────────── */
+  .site-header{
+    position:sticky;top:0;z-index:50;
+    height:80px;background:#fff;
+    border-bottom:1px solid var(--border-light);
+  }
+  .header-inner{
+    height:100%;display:flex;align-items:center;justify-content:space-between;
+    max-width:1320px;margin:0 auto;padding:0 32px;
+  }
+  .logo-wrap{
+    display:flex;align-items:center;
+    height:46px;
+  }
+  .logo-wrap img{height:36px;width:auto;display:block}
+  .nav{display:flex;align-items:center;gap:28px}
+  .nav-link{
+    font-size:14px;font-weight:500;color:#555;
+    display:inline-flex;align-items:center;gap:4px;
+    transition:color .2s;
+  }
+  .nav-link:hover{color:var(--red)}
+  .nav-link .caret{font-size:10px;opacity:.7;transform:translateY(1px)}
+  .cta-row{display:flex;align-items:center;gap:10px;margin-inline-start:8px}
+  .pill{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:10px 22px;border-radius:999px;
+    font-size:14px;font-weight:500;
+    transition:all .2s;
+    white-space:nowrap;
+  }
+  .pill-black{background:#0a0a0a;color:#fff}
+  .pill-black:hover{background:#222}
+  .pill-red{background:var(--red);color:#fff}
+  .pill-red:hover{background:var(--red-hover)}
+  .pill-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.6)}
+  .pill-outline:hover{background:rgba(255,255,255,0.1);border-color:#fff}
+  .pill-cta{padding:12px 28px}
+
+  /* ─────────── hero ─────────── */
+  .hero{
+    position:relative;height:75vh;min-height:560px;overflow:hidden;background:#0a0a0a;
+  }
+  .hero-slide{
+    position:absolute;inset:0;
+    background-size:cover;background-position:center;
+    opacity:0;transition:opacity 1.2s ease;
+  }
+  .hero-slide.active{opacity:1}
+  .hero-slide::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.65));
+  }
+  .hero-content{
+    position:absolute;inset:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:0 32px;
+  }
+  .hero-eyebrow{
+    color:var(--red);font-size:11px;font-weight:600;
+    text-transform:uppercase;letter-spacing:0.2em;
+    margin-bottom:20px;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .hero-title{
+    color:#fff;font-size:clamp(36px,5.2vw,62px);
+    font-weight:700;line-height:1.1;
+    max-width:900px;margin-bottom:36px;
+    text-wrap:balance;
+  }
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .hero-dots{
+    position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:3;
+    display:flex;gap:12px;align-items:center;
+  }
+  .hero-dot{
+    width:8px;height:8px;border-radius:999px;
+    background:rgba(255,255,255,0.5);
+    transition:all .25s;cursor:pointer;border:none;padding:0;
+  }
+  .hero-dot.active{background:var(--red);width:10px;height:10px}
+
+  /* ─────────── compact stat strip (was diagonal split) ─────────── */
+  .strip{
+    position:relative;background:#fff;
+    border-top:1px solid var(--border-light);
+    border-bottom:1px solid var(--border-light);
+    padding:64px 0;
+  }
+  .strip-inner{
+    max-width:1280px;margin:0 auto;padding:0 32px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:56px;align-items:center;
+  }
+  .strip-stat{
+    display:flex;flex-direction:column;align-items:flex-start;
+    border-inline-start:3px solid var(--red);
+    padding-inline-start:20px;min-width:200px;
+  }
+  .strip-stat .num{
+    font-size:88px;font-weight:300;color:var(--red);
+    line-height:0.95;letter-spacing:-0.03em;
+    font-family:'IBM Plex Sans',sans-serif;direction:ltr;
+  }
+  .strip-stat .label{
+    font-size:13px;color:var(--text-2);margin-top:6px;
+    font-weight:500;
+  }
+  .strip-stat .label .lat{display:block;font-size:11px;opacity:.7;letter-spacing:0.08em;margin-top:2px}
+  .strip-mid{display:flex;flex-direction:column;gap:14px;min-width:0}
+  .strip-headline{
+    font-size:28px;font-weight:600;line-height:1.3;
+    color:var(--text);text-wrap:balance;
+  }
+  .strip-headline .accent{color:var(--red)}
+  .strip-meta{
+    display:flex;align-items:center;gap:18px;
+    font-size:12px;color:var(--text-3);
+    font-family:'IBM Plex Sans',sans-serif;
+    letter-spacing:0.12em;text-transform:uppercase;
+  }
+  .strip-meta .pulse{
+    width:8px;height:8px;border-radius:999px;background:var(--red);
+    box-shadow:0 0 0 0 rgba(200,32,42,0.5);
+    animation:pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(200,32,42,0.5)}
+    100%{box-shadow:0 0 0 12px rgba(200,32,42,0)}
+  }
+  .strip-meta .sep{color:var(--border-medium)}
+  .strip-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+  .strip-dots{display:flex;gap:8px}
+  .strip-dot{
+    width:24px;height:3px;border-radius:2px;background:#e0e0e0;
+    cursor:pointer;border:none;transition:all .25s;padding:0;
+  }
+  .strip-dot.active{background:var(--red);width:36px}
+  @media (max-width:900px){
+    .strip-inner{grid-template-columns:1fr;gap:24px}
+    .strip-right{align-items:flex-start}
+    .strip-stat .num{font-size:64px}
+    .strip-headline{font-size:22px}
+  }
+
+  /* ─────────── services ─────────── */
+  .services{padding:120px 0;background:#fff}
+  .section-eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--text);font-family:'IBM Plex Sans',sans-serif;
+    display:flex;align-items:center;gap:6px;margin-bottom:48px;
+  }
+  .section-eyebrow .dot{color:var(--red);font-size:18px;line-height:0}
+  .section-eyebrow.center{justify-content:center;text-align:center}
+  .services-grid{
+    display:grid;grid-template-columns:42% 1fr;gap:80px;align-items:center;
+  }
+  .laptop{
+    position:relative;background:linear-gradient(180deg,#e8e8e8 0%,#cfcfcf 100%);
+    border-radius:14px 14px 4px 4px;padding:14px 14px 18px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.25);
+  }
+  .laptop::after{
+    content:"";position:absolute;left:-3%;right:-3%;bottom:-10px;height:10px;
+    background:linear-gradient(180deg,#bbb,#9a9a9a);
+    border-radius:0 0 18px 18px;
+  }
+  .laptop-screen{
+    background:#000;border-radius:6px;overflow:hidden;
+    aspect-ratio:16/10;
+    background-size:cover;background-position:center;
+    position:relative;
+  }
+  .laptop-screen::before{
+    content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(0,0,0,0.4));
+  }
+  .laptop-play{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:62px;height:62px;border-radius:999px;
+    background:rgba(255,255,255,0.92);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--red);
+  }
+  .laptop-play svg{width:22px;height:22px;margin-inline-start:3px}
+  .laptop-bottom{
+    position:absolute;bottom:14px;right:18px;left:18px;
+    display:flex;align-items:center;justify-content:space-between;
+    color:#fff;font-size:11px;z-index:2;
+  }
+  .laptop-bar{flex:1;height:3px;background:rgba(255,255,255,0.3);margin:0 12px;border-radius:2px;position:relative;overflow:hidden}
+  .laptop-bar::after{content:"";position:absolute;top:0;bottom:0;right:0;width:38%;background:var(--red)}
+
+  .service-list{display:flex;flex-direction:column;gap:36px}
+  .service{
+    display:grid;grid-template-columns:48px 1fr;gap:20px;align-items:start;
+  }
+  .service-icon{
+    width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+    color:var(--red);
+  }
+  .service-icon svg{width:36px;height:36px;stroke-width:1.5}
+  .service-title{font-size:22px;font-weight:600;line-height:1.25;margin-bottom:2px}
+  .service-sub{font-size:12px;font-style:italic;color:var(--text-3);margin-bottom:10px;font-family:'IBM Plex Sans',sans-serif;direction:ltr;display:block}
+  .service-body{color:var(--text-2);font-size:14px;line-height:1.7}
+  .service-body b{color:var(--text);font-weight:600}
+  .services-cta{margin-top:48px}
+
+  /* ─────────── ticker ─────────── */
+  .ticker{
+    background:#0a0a0a;color:#fff;height:40px;display:flex;align-items:center;
+    overflow:hidden;position:relative;
+  }
+  .ticker-label{
+    background:#000;padding:0 18px;height:100%;display:flex;align-items:center;
+    font-size:12px;font-weight:600;letter-spacing:0.05em;
+    border-inline-start:2px solid var(--red);
+    flex-shrink:0;
+  }
+  .ticker-track{
+    display:flex;gap:48px;padding-inline:32px;
+    animation:tick 36s linear infinite;
+    white-space:nowrap;flex-shrink:0;
+  }
+  .ticker:hover .ticker-track{animation-play-state:paused}
+  .ticker-item{font-size:13px;color:#e5e5e5}
+  .ticker-item .red-dot{color:var(--red);margin:0 10px}
+  .ticker-item .ts{color:#999;margin-inline-start:8px;font-family:'IBM Plex Mono',monospace;font-size:11px}
+  @keyframes tick{
+    0%{transform:translateX(0)}
+    100%{transform:translateX(50%)}
+  }
+
+  /* ─────────── updates grid ─────────── */
+  .updates{background:var(--offwhite);padding:96px 0}
+  .updates-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:36px}
+  .updates-more{font-size:13px;color:var(--text-2);border-bottom:1px solid var(--text-2);padding-bottom:2px}
+  .updates-more:hover{color:var(--red);border-color:var(--red)}
+  .updates-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  }
+  .upd-card{background:#fff;overflow:hidden;border-radius:8px;display:flex;flex-direction:column}
+  .upd-card.span2{grid-column:span 2}
+  .upd-card-red{
+    background:var(--red);color:#fff;
+    padding:48px;display:flex;flex-direction:column;justify-content:space-between;
+    min-height:300px;
+  }
+  .upd-card-red .brandmark{
+    width:46px;height:46px;display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);border-radius:8px;
+  }
+  .upd-card-red .brandmark img{height:22px;width:auto}
+  .upd-card-red .brandmark{width:auto;background:transparent;padding:0}
+  .upd-card-red h3{font-size:32px;font-weight:700;line-height:1.2;margin-top:auto}
+  .upd-card-red .lat{display:block;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;opacity:.8;margin-top:10px}
+  .upd-text{padding:32px;display:flex;flex-direction:column;flex:1;gap:16px}
+  .upd-text h4{font-size:18px;font-weight:600;line-height:1.35}
+  .upd-text p{font-size:14px;color:var(--text-2);line-height:1.65}
+  .upd-text .pill{align-self:flex-start;margin-top:auto}
+  .upd-img{
+    position:relative;height:300px;
+    background-size:cover;background-position:center;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:28px;color:#fff;
+  }
+  .upd-img::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.7) 100%),
+               linear-gradient(rgba(200,32,42,0.35),rgba(200,32,42,0.35));
+    mix-blend-mode:multiply;
+  }
+  .upd-img > *{position:relative;z-index:2}
+  .upd-img h4{font-size:20px;font-weight:700;line-height:1.25;margin-bottom:8px}
+  .upd-img p{font-size:13px;opacity:.9;margin-bottom:16px;line-height:1.55}
+  /* row 2 events */
+  .event-card{
+    background:#fff;border-radius:8px;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .event-img{
+    height:170px;background-size:cover;background-position:center;
+    clip-path:polygon(0 0, 100% 0, 100% 88%, 0% 100%);
+  }
+  .event-body{
+    background:var(--red-soft);color:#fff;
+    padding:22px 22px 24px;flex:1;display:flex;flex-direction:column;
+    margin-top:-22px;clip-path:polygon(0 22px, 100% 0, 100% 100%, 0% 100%);
+    position:relative;
+  }
+  .event-cat{
+    font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+    opacity:.85;margin-bottom:8px;font-family:'IBM Plex Sans Arabic',sans-serif;
+    margin-top:14px;
+  }
+  .event-name{font-size:18px;font-weight:700;line-height:1.25;margin-bottom:10px}
+  .event-meta{font-size:12px;opacity:.85;line-height:1.55}
+  .event-icon{
+    position:absolute;bottom:18px;left:18px;width:24px;height:24px;
+    color:rgba(255,255,255,0.65);
+  }
+  .event-icon svg{width:100%;height:100%;stroke-width:1.5}
+
+  /* ─────────── stat band ─────────── */
+  .statband{
+    position:relative;height:400px;overflow:hidden;
+    background-size:cover;background-position:center;
+    display:flex;align-items:center;
+    color:#fff;
+  }
+  .statband::before{
+    content:"";position:absolute;inset:0;
+    background:rgba(0,0,0,0.5);
+  }
+  .statband::after{
+    content:"";position:absolute;inset:0;
+    background:var(--red);mix-blend-mode:multiply;opacity:0.3;
+  }
+  .statband .container{position:relative;z-index:2}
+  .statband .num{font-size:clamp(72px,9vw,128px);font-weight:300;line-height:1;letter-spacing:-0.03em;margin-bottom:18px}
+  .statband .ar{font-size:24px;font-weight:500;margin-bottom:6px}
+  .statband .en{font-size:14px;font-style:italic;opacity:.8;font-family:'IBM Plex Sans',sans-serif;direction:ltr}
+
+  /* ─────────── partners ─────────── */
+  .partners{background:#fff;padding:80px 0}
+  .partners-row{
+    display:flex;align-items:center;gap:48px;justify-content:center;
+    margin-top:48px;flex-wrap:wrap;
+  }
+  .partner-logo{
+    color:#999;font-size:22px;font-weight:600;letter-spacing:0.02em;
+    font-family:'IBM Plex Sans',sans-serif;
+    transition:color .2s;
+    direction:ltr;
+    white-space:nowrap;
+  }
+  .partner-logo.ar{font-family:'IBM Plex Sans Arabic',sans-serif;direction:rtl}
+  .partner-logo:hover{color:var(--text)}
+  .partners-arrows{display:flex;justify-content:center;gap:12px;margin-top:36px}
+  .partners-arrow{
+    width:40px;height:40px;border:1px solid var(--border-medium);border-radius:999px;
+    display:flex;align-items:center;justify-content:center;color:var(--text-2);
+    transition:all .2s;
+  }
+  .partners-arrow:hover{border-color:var(--red);color:var(--red)}
+  .partners-arrow svg{width:16px;height:16px}
+
+  /* ─────────── showcase ─────────── */
+  .showcase{background:var(--offwhite);padding:96px 0}
+  .showcase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .show-card{display:flex;flex-direction:column;gap:14px}
+  .show-head{display:flex;justify-content:space-between;align-items:end;padding-bottom:8px;border-bottom:1px solid #d8d8d8}
+  .show-head .lbl{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;font-family:'IBM Plex Sans',sans-serif}
+  .show-head a{font-size:11px;color:var(--text-2)}
+  .show-head a:hover{color:var(--red)}
+  .show-body{display:flex;flex-direction:column;gap:14px}
+  .show-img{
+    aspect-ratio:4/3;background-size:cover;background-position:center;
+    border-radius:6px;overflow:hidden;
+    position:relative;
+  }
+  .show-img.video::after{
+    content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:54px;height:54px;border-radius:999px;background:rgba(255,255,255,0.92);
+  }
+  .show-img.video::before{
+    content:"";position:absolute;top:50%;left:50%;
+    transform:translate(calc(-50% + 3px),-50%);
+    z-index:2;
+    border-style:solid;
+    border-width:9px 0 9px 14px;
+    border-color:transparent transparent transparent var(--red);
+  }
+  .show-card-red{
+    background:var(--red);color:#fff;padding:32px;border-radius:6px;
+    aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .show-card-red h4{font-size:20px;font-weight:700;line-height:1.25}
+  .show-card-red .lat{display:block;font-size:11px;letter-spacing:0.18em;font-weight:500;margin-top:8px;opacity:.85}
+  .show-card-red .x-mark{font-size:36px;font-weight:700;font-family:'IBM Plex Sans',sans-serif}
+  .show-card-red .handle{font-size:14px;opacity:.9;font-family:'IBM Plex Sans',sans-serif;direction:ltr}
+  .show-img-overlay{
+    aspect-ratio:4/3;background-size:cover;background-position:center;
+    border-radius:6px;overflow:hidden;
+    position:relative;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:24px;color:#fff;
+  }
+  .show-img-overlay::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,0.1),rgba(0,0,0,0.75));
+  }
+  .show-img-overlay > *{position:relative;z-index:2}
+  .show-img-overlay h4{font-size:16px;font-weight:600;line-height:1.35}
+  .show-card h5{font-size:15px;font-weight:600;line-height:1.4;color:var(--text)}
+  .show-card .ts{font-size:11px;color:var(--text-3);font-family:'IBM Plex Mono',monospace}
+  .show-card p{font-size:13px;color:var(--text-2);line-height:1.55}
+  .show-card .lat-up{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text);font-weight:600;font-family:'IBM Plex Sans',sans-serif}
+
+  /* ─────────── footer ─────────── */
+  .footer{background:var(--red-deep);color:#fff}
+  .footer-top{
+    background:var(--red-deeper);height:48px;
+    display:flex;align-items:center;
+  }
+  .footer-top .container{display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .footer-top img{height:18px;width:auto}
+  .footer-top .tag{font-size:12px;opacity:.85;font-family:'IBM Plex Sans Arabic',sans-serif}
+  .footer-top .tag .lat{margin-inline-end:8px;letter-spacing:0.15em;font-weight:600}
+  .footer-main{padding:80px 0 64px}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.3fr;gap:56px}
+  .footer-brand img{height:34px;width:auto;margin-bottom:24px}
+  .footer-brand .tagline{font-size:14px;line-height:1.7;opacity:.85;margin-bottom:24px}
+  .footer-brand .copy{font-size:12px;opacity:.65}
+  .footer h4{
+    font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;
+    margin-bottom:20px;opacity:.7;font-family:'IBM Plex Sans',sans-serif;
+  }
+  .footer ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .footer ul a{font-size:14px;opacity:.92}
+  .footer ul a:hover{opacity:1;color:#fff;text-decoration:underline}
+  .footer-contact-block{margin-bottom:24px}
+  .footer-contact-block .lbl{font-size:13px;font-weight:600;margin-bottom:10px}
+  .footer-contact-block p{font-size:12px;opacity:.85;line-height:1.6;margin-bottom:10px}
+  .footer-contact-block .pill{font-size:13px;padding:8px 18px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25)}
+  .footer-contact-block .pill:hover{background:#fff;color:var(--red-deep);border-color:#fff}
+  .footer-address{font-size:12px;opacity:.85;line-height:1.7}
+  .footer-address a{display:block;margin-top:6px;text-decoration:underline;text-decoration-color:rgba(255,255,255,0.4);text-underline-offset:3px}
+  .footer-bottom{
+    background:#0d2b2e;
+    padding:0;height:36px;
+    display:flex;align-items:center;
+  }
+  .footer-bottom .container{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;opacity:.85}
+  .footer-bottom .links{display:flex;gap:18px}
+  .footer-bottom .links a:hover{color:var(--red)}
+  .footer-bottom .right{display:flex;align-items:center;gap:14px;font-family:'IBM Plex Mono',monospace}
+
+  /* ─────────── responsive ─────────── */
+  @media (max-width:1024px){
+    .hero-title{font-size:42px}
+    .split-headline{font-size:34px}
+    .split-text{padding:48px 40px}
+    .services-grid{grid-template-columns:1fr;gap:48px}
+    .updates-grid{grid-template-columns:repeat(2,1fr)}
+    .upd-card.span2{grid-column:span 2}
+    .showcase-grid{grid-template-columns:repeat(2,1fr)}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  }
+  @media (max-width:768px){
+    .nav .nav-link{display:none}
+    .nav .pill-black{display:none}
+    .header-inner{padding:0 18px}
+    .container{padding:0 18px}
+    .hero{height:auto;min-height:520px;padding:80px 0}
+    .hero-title{font-size:32px}
+    .split{height:auto}
+    .split-img{position:relative;width:100%;height:280px;clip-path:polygon(0 0, 100% 0, 100% 92%, 0% 100%)}
+    .split-text{position:relative;width:100%;padding:48px 24px}
+    .split-stat .num{font-size:60px}
+    .updates-grid{grid-template-columns:1fr}
+    .upd-card.span2{grid-column:span 1}
+    .showcase-grid{grid-template-columns:1fr}
+    .footer-grid{grid-template-columns:1fr;gap:36px}
+    .footer-main{padding:48px 0 40px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────── 1. HEADER ─────────── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo-wrap" aria-label="راوي برس">
+      <img src="assets/logo-color.png" alt="Rawi Press" />
+    </a>
+    <nav class="nav">
+      <a href="#" class="nav-link">الخدمات <span class="caret">▾</span></a>
+      <a href="#" class="nav-link">الأخبار والإصدارات</a>
+      <a href="#" class="nav-link">من نحن</a>
+      <a href="#" class="nav-link">تواصل معنا</a>
+      <div class="cta-row">
+        <a href="#" class="pill pill-black">منطقة العميل</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ─────────── 2. HERO SLIDER ─────────── -->
+<section class="hero" id="hero">
+  <div class="hero-slide active" data-idx="0" style="background-image:url('https://admin.rawipress.com/media/244/XsUz5L44o1ajslarsiEVxHkOQOw0zZPW06tC5mHY.png')"></div>
+  <div class="hero-slide" data-idx="1" style="background-image:url('https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg')"></div>
+  <div class="hero-slide" data-idx="2" style="background-image:url('https://admin.rawipress.com/media/243/WXD80vUIys4sY8UJSutO6PKsMkQB7GIrvKRK5j2X.jpg')"></div>
+  <div class="hero-slide" data-idx="3" style="background-image:url('https://admin.rawipress.com/media/264/kTpQ0Gw2pOffQn5nnSTm1RvSmlZPZcDdvuvD5hZp.jpg')"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow lat" id="hero-eyebrow">RAWI PRESS · 01 / 04</div>
+    <h1 class="hero-title" id="hero-title">لسنا مجرد ناقلي أخبار، نحن صنّاع القصة</h1>
+    <div class="hero-actions">
+      <a href="#" class="pill pill-outline pill-cta">تعرف لماذا تختار راوي</a>
+      <a href="#" class="pill pill-red pill-cta">ابدأ تجربتك الآن</a>
+    </div>
+  </div>
+
+  <div class="hero-dots" id="hero-dots">
+    <button class="hero-dot active" data-i="0" aria-label="slide 1"></button>
+    <button class="hero-dot" data-i="1" aria-label="slide 2"></button>
+    <button class="hero-dot" data-i="2" aria-label="slide 3"></button>
+    <button class="hero-dot" data-i="3" aria-label="slide 4"></button>
+  </div>
+</section>
+
+<!-- ─────────── 3. COMPACT STAT STRIP ─────────── -->
+<section class="strip" id="strip">
+  <div class="strip-inner">
+    <div class="strip-stat">
+      <div class="num" id="split-num">5min</div>
+      <div class="label" id="split-label">الوقت من الحدث للبث<span class="lat">EVENT TO BROADCAST</span></div>
+    </div>
+    <div class="strip-mid">
+      <div class="strip-meta">
+        <span class="pulse"></span>
+        <span class="lat">LIVE NEWSROOM</span>
+        <span class="sep">/</span>
+        <span>غرفة الأخبار · الرياض</span>
+      </div>
+      <h2 class="strip-headline" id="split-headline">
+        محتوى إخباري احترافي يضع جمهورك في <span class="accent">قلب كل قصة.</span>
+      </h2>
+    </div>
+    <div class="strip-right">
+      <a href="#" class="pill pill-red pill-cta">تعرّف على الفرق الذي يصنعه راوي ←</a>
+      <div class="strip-dots" id="split-dots">
+        <button class="strip-dot active" data-i="0" aria-label="1"></button>
+        <button class="strip-dot" data-i="1" aria-label="2"></button>
+        <button class="strip-dot" data-i="2" aria-label="3"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 4. SERVICES ─────────── -->
+<section class="services">
+  <div class="container">
+    <div class="section-eyebrow"><span>خدماتنا · </span><span class="lat">OUR SERVICES</span><span class="dot">·</span></div>
+    <div class="services-grid">
+      <div class="laptop">
+        <div class="laptop-screen" style="background-image:url('https://admin.rawipress.com/media/244/XsUz5L44o1ajslarsiEVxHkOQOw0zZPW06tC5mHY.png')">
+          <div class="laptop-play"><i data-lucide="play"></i></div>
+          <div class="laptop-bottom">
+            <i data-lucide="pause" style="width:14px;height:14px"></i>
+            <div class="laptop-bar"></div>
+            <span class="mono">02:14 / 05:48</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="service-list">
+          <div class="service">
+            <div class="service-icon"><i data-lucide="video"></i></div>
+            <div>
+              <h3 class="service-title">محتوى الفيديو الإخباري</h3>
+              <span class="service-sub">Sports News Video Content</span>
+              <p class="service-body">مزيج فريد من <b>اللقطات الحصرية</b> والمحتوى المختار بعناية يصل لك بصيغ متعددة تلائم احتياجات <b>المنصات التلفزيونية والرقمية والاجتماعية</b>.</p>
+            </div>
+          </div>
+          <div class="service">
+            <div class="service-icon"><i data-lucide="calendar"></i></div>
+            <div>
+              <h3 class="service-title">تغطية الأحداث الكبرى</h3>
+              <span class="service-sub">Key Events Coverage</span>
+              <p class="service-body">لأكثر من <b>20 سنة</b> راوي مصدر موثوق لتغطية أبرز <b>الأحداث الرياضية والثقافية</b> في المملكة والمنطقة.</p>
+            </div>
+          </div>
+          <div class="service">
+            <div class="service-icon"><i data-lucide="download"></i></div>
+            <div>
+              <h3 class="service-title">الأرشيف والمحتوى التاريخي</h3>
+              <span class="service-sub">Archive Services</span>
+              <p class="service-body">أثرِ روايتك بمحتوى من <b>أرشيفنا الإخباري</b> الذي يغطي اللحظات التي صنعت المنطقة على مدى <b>عقدين</b>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="services-cta">
+          <a href="#" class="pill pill-red pill-cta">تواصل معنا لمعرفة المزيد</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 5. TICKER ─────────── -->
+<div class="ticker" aria-label="آخر الإصدارات">
+  <div class="ticker-label">آخر الإصدارات</div>
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item">كرة القدم — قمة النصر × الاتحاد جاهزة للتحميل <span class="red-dot">·</span> <span class="ts">منذ ساعة</span></span>
+    <span class="ticker-item">سباقات — تغطية الدرعية إي بري الكاملة متوفرة <span class="red-dot">·</span> <span class="ts">منذ ساعتين</span></span>
+    <span class="ticker-item">رؤية 2030 — لقطات حصرية لمشروع القدية <span class="red-dot">·</span> <span class="ts">منذ 3 ساعات</span></span>
+    <span class="ticker-item">ترفيه — افتتاح موسم الرياض في صور <span class="red-dot">·</span> <span class="ts">منذ 5 ساعات</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">كرة القدم — قمة النصر × الاتحاد جاهزة للتحميل <span class="red-dot">·</span> <span class="ts">منذ ساعة</span></span>
+    <span class="ticker-item">سباقات — تغطية الدرعية إي بري الكاملة متوفرة <span class="red-dot">·</span> <span class="ts">منذ ساعتين</span></span>
+    <span class="ticker-item">رؤية 2030 — لقطات حصرية لمشروع القدية <span class="red-dot">·</span> <span class="ts">منذ 3 ساعات</span></span>
+    <span class="ticker-item">ترفيه — افتتاح موسم الرياض في صور <span class="red-dot">·</span> <span class="ts">منذ 5 ساعات</span></span>
+  </div>
+</div>
+
+<!-- ─────────── 6. RAWI UPDATES ─────────── -->
+<section class="updates">
+  <div class="container">
+    <div class="updates-head">
+      <div class="section-eyebrow" style="margin-bottom:0">
+        <span>تحديثات راوي · </span><span class="lat">RAWI UPDATES</span><span class="dot">·</span>
+      </div>
+      <a href="#" class="updates-more">المزيد <span class="lat">More →</span></a>
+    </div>
+
+    <!-- row 1 -->
+    <div class="updates-grid" style="margin-bottom:20px">
+      <div class="upd-card upd-card-red span2">
+        <div class="brandmark"><img src="assets/logo-white.png" alt=""></div>
+        <div>
+          <h3>صنّاع المحتوى الإخباري للمنطقة</h3>
+          <span class="lat">POWERING NEWS MEDIA IN THE REGION</span>
+        </div>
+      </div>
+      <div class="upd-card">
+        <div class="upd-text">
+          <h4>راوي يطلق أدوات ذكاء اصطناعي مخصصة للسياق العربي</h4>
+          <p>منصة جديدة تُسرّع توليد العناوين، تلخيص اللقطات، وكتابة سكربتات البث بالعربية الفصحى واللهجات الخليجية.</p>
+          <a href="#" class="pill pill-red">اعرف المزيد</a>
+        </div>
+      </div>
+      <div class="upd-card">
+        <div class="upd-img" style="background-image:url('https://admin.rawipress.com/media/253/A3rzfeFmiBU9RTpij7op1pgDXCfXHXdsgzhELiGn.jpg')">
+          <h4>ندوة تغطية كأس العالم 2026</h4>
+          <p>استضفنا ندوة لشرح كيفية استعدادنا لتغطية كأس العالم 2026.</p>
+          <a href="#" class="pill pill-red" style="align-self:flex-start">تواصل معنا</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- row 2 events -->
+    <div class="updates-grid">
+      <div class="event-card">
+        <div class="event-img" style="background-image:url('https://admin.rawipress.com/media/261/kBo41tiM4gbAMRFIXd6zvRUsx2sD4Ri52yjzGWhM.jpg')"></div>
+        <div class="event-body">
+          <div class="event-cat">كرة القدم</div>
+          <div class="event-name">كأس العالم 2026</div>
+          <div class="event-meta">كندا · المكسيك · الولايات المتحدة<br>11 يونيو – 19 يوليو 2026</div>
+          <div class="event-icon"><i data-lucide="trophy"></i></div>
+        </div>
+      </div>
+      <div class="event-card">
+        <div class="event-img" style="background-image:url('https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg')"></div>
+        <div class="event-body">
+          <div class="event-cat">سباقات</div>
+          <div class="event-name">فورمولا إي الدرعية</div>
+          <div class="event-meta">الرياض · السعودية<br>يناير 2026</div>
+          <div class="event-icon"><i data-lucide="flag"></i></div>
+        </div>
+      </div>
+      <div class="event-card">
+        <div class="event-img" style="background-image:url('https://admin.rawipress.com/media/243/WXD80vUIys4sY8UJSutO6PKsMkQB7GIrvKRK5j2X.jpg')"></div>
+        <div class="event-body">
+          <div class="event-cat">ترفيه</div>
+          <div class="event-name">موسم الرياض 2026</div>
+          <div class="event-meta">الرياض · السعودية<br>أكتوبر 2025 – مارس 2026</div>
+          <div class="event-icon"><i data-lucide="sparkles"></i></div>
+        </div>
+      </div>
+      <div class="event-card">
+        <div class="event-img" style="background-image:url('https://admin.rawipress.com/media/253/A3rzfeFmiBU9RTpij7op1pgDXCfXHXdsgzhELiGn.jpg')"></div>
+        <div class="event-body">
+          <div class="event-cat">كرة القدم</div>
+          <div class="event-name">كأس آسيا 2027</div>
+          <div class="event-meta">السعودية<br>يناير 2027</div>
+          <div class="event-icon"><i data-lucide="trophy"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 7. STAT BAND ─────────── -->
+<section class="statband" style="background-image:url('https://admin.rawipress.com/media/244/XsUz5L44o1ajslarsiEVxHkOQOw0zZPW06tC5mHY.png')">
+  <div class="container">
+    <div class="num lat">+10,000</div>
+    <div class="ar">ساعة من المحتوى المُنتج سنوياً</div>
+    <div class="en">Hours of content produced annually</div>
+  </div>
+</section>
+
+<!-- ─────────── 8. PARTNERS ─────────── -->
+<section class="partners">
+  <div class="container">
+    <div class="section-eyebrow center">
+      <span>بشراكة مع · </span><span class="lat">PARTNERING WITH</span><span class="dot">·</span>
+    </div>
+    <div class="partners-row" id="partners-row">
+      <span class="partner-logo">Saudi Pro League</span>
+      <span class="partner-logo">FIFA</span>
+      <span class="partner-logo">MotoGP</span>
+      <span class="partner-logo">WTA</span>
+      <span class="partner-logo">Formula E</span>
+      <span class="partner-logo">NEOM</span>
+      <span class="partner-logo">QIDDIYA</span>
+      <span class="partner-logo ar">الهيئة العامة للترفيه</span>
+    </div>
+    <div class="partners-arrows">
+      <button class="partners-arrow" aria-label="prev"><i data-lucide="chevron-right"></i></button>
+      <button class="partners-arrow" aria-label="next"><i data-lucide="chevron-left"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 9. SHOWCASE ─────────── -->
+<section class="showcase">
+  <div class="container">
+    <div class="showcase-grid">
+
+      <div class="show-card">
+        <div class="show-head"><span class="lbl lat">INSIGHTS</span><a href="#" class="lat">More →</a></div>
+        <div class="show-body">
+          <div class="show-card-red">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <img src="assets/logo-white.png" style="height:22px;width:auto" alt="">
+              <i data-lucide="arrow-left" style="width:18px;height:18px"></i>
+            </div>
+            <div>
+              <h4>صنّاع المحتوى الإخباري للمنطقة</h4>
+              <span class="lat">POWERING NEWS MEDIA</span>
+            </div>
+          </div>
+          <h5>نظرة جديدة، التزام مستمر: تعرّف على راوي الجديد</h5>
+        </div>
+      </div>
+
+      <div class="show-card">
+        <div class="show-head"><span class="lbl lat">CONTENT</span><a href="#" class="lat">More →</a></div>
+        <div class="show-body">
+          <div class="show-img video" style="background-image:url('https://admin.rawipress.com/media/261/kBo41tiM4gbAMRFIXd6zvRUsx2sD4Ri52yjzGWhM.jpg')"></div>
+          <h5>هيرفي رينار يستلهم من نهج نادال قبل مواجهة بايرن ميونيخ</h5>
+          <span class="ts">اليوم، 10:20 صباحًا</span>
+        </div>
+      </div>
+
+      <div class="show-card">
+        <div class="show-head"><span class="lbl lat">X</span><a href="#" class="lat">Follow us →</a></div>
+        <div class="show-body">
+          <div class="show-card-red">
+            <div class="x-mark lat">𝕏</div>
+            <div>
+              <h4>تابعنا على X</h4>
+              <div class="handle">@rawipress</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="show-card">
+        <div class="show-head"><span class="lbl lat">ABOUT US</span><a href="#" class="lat">More →</a></div>
+        <div class="show-body">
+          <div class="show-img-overlay" style="background-image:url('https://admin.rawipress.com/media/264/kTpQ0Gw2pOffQn5nnSTm1RvSmlZPZcDdvuvD5hZp.jpg')">
+            <h4>موثوق من المؤسسات الإعلامية في المنطقة</h4>
+          </div>
+          <span class="lat-up">TRUSTED BY MEDIA IN MENA</span>
+          <p>شريكك الإعلامي العالمي بمعرفة محلية عميقة.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── 10. FOOTER ─────────── -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <span class="tag"><span class="lat">RAWI PRESS</span> · صناعة المحتوى الإخباري للمنطقة</span>
+      <img src="assets/logo-white.png" alt="Rawi Press">
+    </div>
+  </div>
+
+  <div class="footer-main">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/logo-white.png" alt="Rawi Press">
+          <p class="tagline">نشر المحتوى الإخباري الجاهز للبث · من الرياض إلى المنطقة.</p>
+          <p class="copy">© 2026 راوي برس · جميع الحقوق محفوظة</p>
+        </div>
+
+        <div>
+          <h4>الخدمات · <span class="lat">SERVICES</span></h4>
+          <ul>
+            <li><a href="#">للمؤسسات الإعلامية</a></li>
+            <li><a href="#">للعلامات والاتحادات</a></li>
+            <li><a href="#">الأحداث الرياضية الكبرى</a></li>
+            <li><a href="#">مكتبة الفيديو</a></li>
+            <li><a href="#">التغطيات الحية</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>الأخبار · <span class="lat">ABOUT</span></h4>
+          <ul>
+            <li><a href="#">الأخبار والإصدارات</a></li>
+            <li><a href="#">من نحن</a></li>
+            <li><a href="#">الفريق</a></li>
+            <li><a href="#">الوظائف</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>تواصل معنا · <span class="lat">CONTACT</span></h4>
+          <div class="footer-contact-block">
+            <div class="lbl">استفسارات تحريرية</div>
+            <a href="#" class="pill">تواصل مع غرفة الأخبار</a>
+          </div>
+          <div class="footer-contact-block">
+            <div class="lbl">استفسارات تجارية</div>
+            <a href="#" class="pill">تواصل مع الفريق التجاري</a>
+          </div>
+          <div class="footer-contact-block">
+            <div class="lbl">غرفة أخبار راوي</div>
+            <p class="footer-address">
+              مبنى راوي · شارع الملك فهد<br>
+              الرياض · المملكة العربية السعودية
+              <a href="mailto:contact@rawipress.com" class="lat">contact@rawipress.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="links">
+        <a href="#">Privacy Notice</a>
+        <a href="#">Site terms</a>
+        <a href="#">Cookie policy</a>
+      </div>
+      <div class="right">
+        <span class="lat">© RAWI PRESS 2026</span>
+        <span id="riyadh-clock"></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // lucide
+  if (window.lucide) lucide.createIcons();
+
+  // ─── hero slider ───
+  (function(){
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots   = document.querySelectorAll('.hero-dot');
+    const titleEl = document.getElementById('hero-title');
+    const eyebrowEl = document.getElementById('hero-eyebrow');
+    const total = slides.length;
+    const taglines = [
+      'لسنا مجرد ناقلي أخبار، نحن صنّاع القصة',
+      'من الميدان إلى الشاشة في خمس دقائق',
+      'محتوى جاهز للبث · مدعوم بذكاء اصطناعي عربي',
+      'شريكك الإعلامي من قلب الرياض'
+    ];
+    let i = 0;
+    let timer;
+    function go(n){
+      i = (n + total) % total;
+      slides.forEach((s,k)=>s.classList.toggle('active', k===i));
+      dots.forEach((d,k)=>d.classList.toggle('active', k===i));
+      titleEl.textContent = taglines[i];
+      const num = String(i+1).padStart(2,'0');
+      eyebrowEl.textContent = `RAWI PRESS · ${num} / 0${total}`;
+    }
+    function start(){ timer = setInterval(()=>go(i+1), 6000); }
+    function reset(){ clearInterval(timer); start(); }
+    dots.forEach(d=>d.addEventListener('click', ()=>{
+      go(parseInt(d.dataset.i));
+      reset();
+    }));
+    start();
+  })();
+
+  // ─── split slider ───
+  (function(){
+    const headlineEl = document.getElementById('split-headline');
+    const numEl   = document.getElementById('split-num');
+    const labelEl = document.getElementById('split-label');
+    const dots    = document.querySelectorAll('.strip-dot');
+    const states = [
+      { headline:'محتوى إخباري احترافي يضع جمهورك في {قلب كل قصة.}', num:'5min', label:'الوقت من الحدث للبث' },
+      { headline:'مكتبة محتوى {جاهزة للبث يومياً} لغرف أخبار المنطقة.', num:'100+', label:'مادة جاهزة للبث يومياً' },
+      { headline:'تغطية {مستمرة من قلب الرياض} طوال أيام الأسبوع.', num:'24/7', label:'تغطية مستمرة من الرياض' }
+    ];
+    let i = 0, timer;
+    function render(){
+      const s = states[i];
+      headlineEl.innerHTML = s.headline.replace(/\{(.+?)\}/, '<span class="accent">$1</span>');
+      numEl.textContent = s.num;
+      labelEl.textContent = s.label;
+      dots.forEach((d,k)=>d.classList.toggle('active', k===i));
+    }
+    function go(n){ i = (n + states.length) % states.length; render(); }
+    function start(){ timer = setInterval(()=>go(i+1), 8000); }
+    function reset(){ clearInterval(timer); start(); }
+    dots.forEach(d=>d.addEventListener('click', ()=>{ go(parseInt(d.dataset.i)); reset(); }));
+    start();
+  })();
+
+  // ─── riyadh clock ───
+  (function(){
+    const el = document.getElementById('riyadh-clock');
+    if(!el) return;
+    function tick(){
+      const now = new Date();
+      const t = new Intl.DateTimeFormat('en-GB', {
+        timeZone:'Asia/Riyadh', hour:'2-digit', minute:'2-digit', hour12:false
+      }).format(now);
+      el.textContent = `RUH ${t}`;
+    }
+    tick();
+    setInterval(tick, 30000);
+  })();
+</script>
+</body>
+</html>
