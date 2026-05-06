@@ -471,33 +471,169 @@
   .footer-bottom .links a:hover{color:var(--red)}
   .footer-bottom .right{display:flex;align-items:center;gap:14px;font-family:'IBM Plex Mono',monospace}
 
+  /* ─────────── mobile menu (hamburger + drawer) ─────────── */
+  .menu-btn{
+    display:none;width:42px;height:42px;border-radius:10px;
+    align-items:center;justify-content:center;
+    background:transparent;border:1px solid var(--border-medium);
+    color:var(--text);transition:all .2s;
+  }
+  .menu-btn:hover{border-color:var(--red);color:var(--red)}
+  .menu-btn svg{width:22px;height:22px;stroke-width:2}
+  .menu-overlay{
+    position:fixed;inset:0;z-index:80;
+    background:rgba(10,10,10,0.55);
+    opacity:0;pointer-events:none;transition:opacity .25s;
+  }
+  .menu-overlay.open{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;bottom:0;inset-inline-end:0;z-index:90;
+    width:min(86vw,360px);background:#fff;
+    transform:translateX(-100%);
+    transition:transform .3s ease;
+    display:flex;flex-direction:column;
+    box-shadow:-20px 0 40px rgba(0,0,0,0.18);
+  }
+  html[dir="rtl"] .drawer{transform:translateX(100%)}
+  .drawer.open{transform:translateX(0) !important}
+  .drawer-head{
+    display:flex;align-items:center;justify-content:space-between;
+    height:80px;padding:0 22px;border-bottom:1px solid var(--border-light);
+  }
+  .drawer-head img{height:30px;width:auto}
+  .drawer-close{
+    width:38px;height:38px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--offwhite);color:var(--text);
+  }
+  .drawer-close svg{width:20px;height:20px}
+  .drawer-nav{
+    display:flex;flex-direction:column;
+    padding:18px 22px;gap:2px;flex:1;overflow-y:auto;
+  }
+  .drawer-nav a{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 4px;font-size:16px;font-weight:500;
+    color:var(--text);
+    border-bottom:1px solid var(--border-light);
+  }
+  .drawer-nav a:hover{color:var(--red)}
+  .drawer-nav a .arr{font-size:14px;color:var(--text-3)}
+  .drawer-cta{padding:18px 22px 26px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border-light)}
+  .drawer-cta .pill{justify-content:center;padding:14px 22px;font-size:15px;width:100%}
+
   /* ─────────── responsive ─────────── */
   @media (max-width:1024px){
     .hero-title{font-size:42px}
-    .split-headline{font-size:34px}
-    .split-text{padding:48px 40px}
     .services-grid{grid-template-columns:1fr;gap:48px}
     .updates-grid{grid-template-columns:repeat(2,1fr)}
     .upd-card.span2{grid-column:span 2}
     .showcase-grid{grid-template-columns:repeat(2,1fr)}
     .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+    .laptop{max-width:520px;margin:0 auto}
   }
   @media (max-width:768px){
-    .nav .nav-link{display:none}
-    .nav .pill-black{display:none}
-    .header-inner{padding:0 18px}
+    /* header — hide desktop nav, show hamburger */
+    .nav{display:none}
+    .menu-btn{display:inline-flex}
+    .site-header{height:64px}
+    .logo-wrap{height:38px}
+    .logo-wrap img{height:28px}
+    .header-inner{padding:0 16px}
     .container{padding:0 18px}
-    .hero{height:auto;min-height:520px;padding:80px 0}
-    .hero-title{font-size:32px}
-    .split{height:auto}
-    .split-img{position:relative;width:100%;height:280px;clip-path:polygon(0 0, 100% 0, 100% 92%, 0% 100%)}
-    .split-text{position:relative;width:100%;padding:48px 24px}
-    .split-stat .num{font-size:60px}
-    .updates-grid{grid-template-columns:1fr}
+
+    /* hero */
+    .hero{height:auto;min-height:560px;padding:96px 0 88px}
+    .hero-eyebrow{font-size:10px;margin-bottom:14px}
+    .hero-title{font-size:30px;line-height:1.18;margin-bottom:28px;padding:0 4px}
+    .hero-actions{flex-direction:column;width:100%;max-width:320px;gap:10px}
+    .hero-actions .pill{width:100%;padding:14px 22px}
+    .hero-dots{bottom:22px;gap:10px}
+
+    /* compact strip */
+    .strip{padding:40px 0}
+    .strip-inner{padding:0 18px;gap:22px}
+    .strip-stat{padding-inline-start:16px;min-width:0;border-inline-start-width:3px}
+    .strip-stat .num{font-size:56px}
+    .strip-stat .label{font-size:12px}
+    .strip-headline{font-size:20px;line-height:1.4}
+    .strip-meta{font-size:11px;letter-spacing:0.08em;flex-wrap:wrap;gap:10px}
+    .strip-right{align-items:stretch;gap:16px}
+    .strip-right .pill{justify-content:center;width:100%}
+    .strip-dots{justify-content:flex-start}
+
+    /* services */
+    .services{padding:72px 0}
+    .section-eyebrow{margin-bottom:32px;font-size:11px}
+    .services-grid{gap:36px}
+    .laptop{padding:10px 10px 14px;border-radius:10px 10px 4px 4px;max-width:100%}
+    .service{grid-template-columns:40px 1fr;gap:14px}
+    .service-icon{width:40px;height:40px}
+    .service-icon svg{width:30px;height:30px}
+    .service-title{font-size:18px}
+    .service-body{font-size:13px}
+    .service-list{gap:28px}
+    .services-cta{margin-top:32px}
+    .services-cta .pill{display:block;text-align:center}
+
+    /* ticker */
+    .ticker-label{padding:0 14px;font-size:11px}
+    .ticker-item{font-size:12px}
+
+    /* updates */
+    .updates{padding:64px 0}
+    .updates-head{margin-bottom:24px;flex-wrap:wrap;gap:12px}
+    .updates-grid{grid-template-columns:1fr;gap:14px}
     .upd-card.span2{grid-column:span 1}
-    .showcase-grid{grid-template-columns:1fr}
+    .upd-card-red{padding:32px;min-height:220px}
+    .upd-card-red h3{font-size:24px}
+    .upd-card-red .lat{font-size:11px}
+    .upd-text{padding:24px;gap:12px}
+    .upd-text h4{font-size:17px}
+    .upd-img{height:240px;padding:22px}
+    .upd-img h4{font-size:18px}
+    .event-img{height:150px}
+    .event-body{padding:18px 18px 22px;margin-top:-20px}
+    .event-name{font-size:16px}
+
+    /* stat band */
+    .statband{height:300px}
+    .statband .num{font-size:64px;margin-bottom:14px}
+    .statband .ar{font-size:18px}
+    .statband .en{font-size:12px}
+
+    /* partners */
+    .partners{padding:56px 0}
+    .partners-row{gap:28px 32px;margin-top:32px}
+    .partner-logo{font-size:17px}
+    .partners-arrows{margin-top:24px}
+
+    /* showcase */
+    .showcase{padding:64px 0}
+    .showcase-grid{grid-template-columns:1fr;gap:28px}
+    .show-card-red{padding:24px}
+    .show-card-red h4{font-size:18px}
+    .show-img-overlay{padding:20px}
+    .show-img-overlay h4{font-size:15px}
+
+    /* footer */
+    .footer-top{height:auto;padding:14px 0}
+    .footer-top .container{flex-direction:column;align-items:flex-start;gap:10px}
+    .footer-top img{height:16px}
+    .footer-top .tag{font-size:11px}
     .footer-grid{grid-template-columns:1fr;gap:36px}
     .footer-main{padding:48px 0 40px}
+    .footer-brand img{height:30px;margin-bottom:18px}
+    .footer-bottom{height:auto;padding:14px 0}
+    .footer-bottom .container{flex-direction:column;gap:10px;text-align:center}
+    .footer-bottom .links{flex-wrap:wrap;justify-content:center;gap:14px}
+  }
+  @media (max-width:380px){
+    .hero-title{font-size:26px}
+    .strip-stat .num{font-size:46px}
+    .strip-headline{font-size:18px}
+    .upd-card-red h3{font-size:20px}
+    .statband .num{font-size:54px}
   }
 </style>
 </head>
@@ -518,8 +654,32 @@
         <a href="#" class="pill pill-black">منطقة العميل</a>
       </div>
     </nav>
+    <button class="menu-btn" id="menu-btn" aria-label="القائمة" aria-controls="mobile-drawer" aria-expanded="false">
+      <i data-lucide="menu"></i>
+    </button>
   </div>
 </header>
+
+<!-- ─────────── MOBILE DRAWER ─────────── -->
+<div class="menu-overlay" id="menu-overlay" aria-hidden="true"></div>
+<aside class="drawer" id="mobile-drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <img src="assets/logo-color.png" alt="Rawi Press" />
+    <button class="drawer-close" id="drawer-close" aria-label="إغلاق">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="#">الخدمات <span class="arr">←</span></a>
+    <a href="#">الأخبار والإصدارات <span class="arr">←</span></a>
+    <a href="#">من نحن <span class="arr">←</span></a>
+    <a href="#">تواصل معنا <span class="arr">←</span></a>
+  </nav>
+  <div class="drawer-cta">
+    <a href="#" class="pill pill-red">ابدأ تجربتك الآن</a>
+    <a href="#" class="pill pill-black">منطقة العميل</a>
+  </div>
+</aside>
 
 <!-- ─────────── 2. HERO SLIDER ─────────── -->
 <section class="hero" id="hero">
@@ -945,6 +1105,36 @@
     function reset(){ clearInterval(timer); start(); }
     dots.forEach(d=>d.addEventListener('click', ()=>{ go(parseInt(d.dataset.i)); reset(); }));
     start();
+  })();
+
+  // ─── mobile drawer ───
+  (function(){
+    const btn      = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('drawer-close');
+    const drawer   = document.getElementById('mobile-drawer');
+    const overlay  = document.getElementById('menu-overlay');
+    if(!btn || !drawer || !overlay) return;
+    function open(){
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+      drawer.setAttribute('aria-hidden','false');
+      overlay.setAttribute('aria-hidden','false');
+      btn.setAttribute('aria-expanded','true');
+      document.body.style.overflow='hidden';
+    }
+    function close(){
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+      drawer.setAttribute('aria-hidden','true');
+      overlay.setAttribute('aria-hidden','true');
+      btn.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    }
+    btn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', close);
+    drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
   })();
 
   // ─── riyadh clock ───
