@@ -154,55 +154,55 @@
   }
   .hero-dot.active{background:var(--red);width:10px;height:10px}
 
-  /* ─────────── diagonal split (SNTV signature) ─────────── */
-  .split{position:relative;height:600px;background:#fff;overflow:hidden}
-  .split-text{
-    position:absolute;inset:0 0 0 0;
-    width:55%;padding:80px 64px 80px 0;padding-inline-start:0;padding-inline-end:64px;
-    display:flex;flex-direction:column;justify-content:center;
-    z-index:2;
+  /* ─────────── compact stat strip ─────────── */
+  .stat-strip{
+    background:#fff;
+    border-top:3px solid var(--red);
+    border-bottom:1px solid var(--border-medium);
+    padding:64px 0;
   }
-  .split-eyebrow{
-    font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
-    color:var(--text);font-family:'IBM Plex Sans',sans-serif;
-    display:flex;align-items:center;gap:6px;margin-bottom:22px;
+  .stat-strip-inner{max-width:1280px;margin:0 auto;padding:0 32px}
+  .stat-strip-top{
+    display:grid;grid-template-columns:1fr 0.9fr;gap:40px;align-items:end;
+    padding-bottom:40px;border-bottom:1px solid var(--border-medium);margin-bottom:40px;
   }
-  .split-eyebrow .dot{color:var(--red);font-size:18px;line-height:0}
-  .split-headline{
-    font-size:clamp(24px,4vw,44px);font-weight:700;line-height:1.15;color:var(--text);
-    margin-bottom:24px;text-wrap:balance;
+  .stat-strip-eyebrow{
+    display:flex;align-items:center;gap:10px;
+    font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--text-2);font-family:'IBM Plex Sans',sans-serif;margin-bottom:18px;
   }
-  .split-headline .accent{color:var(--red)}
-  .split-body{
-    color:var(--text-2);font-size:16px;line-height:1.7;margin-bottom:28px;
-    max-width:560px;
+  .stat-strip-eyebrow .dot{
+    width:6px;height:6px;border-radius:999px;background:var(--red);flex-shrink:0;
   }
-  .split-body p+p{margin-top:14px}
-  .split-stat{
-    display:flex;align-items:center;gap:18px;
-    border-inline-start:3px solid var(--red);
-    padding-inline-start:18px;margin-bottom:36px;
+  .stat-strip-headline{
+    font-size:clamp(28px,4vw,36px);font-weight:700;line-height:1.18;
+    color:var(--black);text-wrap:balance;
   }
-  .split-stat .num{
-    font-size:80px;font-weight:300;color:var(--red);
-    line-height:1;letter-spacing:-0.03em;
-    font-family:'IBM Plex Sans',sans-serif;direction:ltr;
+  .stat-strip-headline .accent{color:var(--red)}
+  .stat-strip-body{font-size:14px;line-height:1.65;color:#666;margin-bottom:16px}
+  .stat-strip-cta{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--red);color:#fff;
+    padding:10px 24px;border-radius:999px;
+    font-size:13px;font-weight:500;transition:background .2s;
   }
-  .split-stat .label{font-size:14px;color:var(--text-2);font-weight:500;line-height:1.4}
-  .split-stat .label .lat{display:block;font-size:11px;opacity:.65;letter-spacing:0.08em;margin-top:4px}
-  .split-cta-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
-  .split-dots{display:flex;gap:8px}
-  .split-dot{
-    width:24px;height:3px;border-radius:2px;background:#e0e0e0;
-    cursor:pointer;border:none;transition:all .25s;padding:0;
+  .stat-strip-cta:hover{background:var(--red-hover)}
+  .stat-strip-bottom{
+    display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:24px;align-items:center;
   }
-  .split-dot.active{background:var(--red);width:36px}
-  .split-img{
-    position:absolute;top:0;bottom:0;inset-inline-start:50%;width:55%;
-    background-size:cover;background-position:center;
-    clip-path:polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+  .stat-strip-stat{display:flex;flex-direction:column;gap:6px}
+  .stat-strip-stat .num{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:clamp(48px,6vw,64px);font-weight:300;color:var(--red);
+    line-height:1;letter-spacing:-0.025em;direction:ltr;
   }
-  .split-text-inner{padding-inline-start:max(32px,calc((100vw - 1280px)/2 + 32px));max-width:760px}
+  .stat-strip-stat .ar{font-size:14px;font-weight:500;color:var(--black)}
+  .stat-strip-stat .en{
+    font-size:11px;font-weight:600;color:#999;
+    letter-spacing:0.18em;text-transform:uppercase;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .stat-strip-divider{width:1px;height:64px;background:var(--border-medium)}
 
   /* ─────────── services ─────────── */
   .services{padding:120px 0;background:#fff}
@@ -458,17 +458,11 @@
     .logo-wrap img{height:28px}
     .header-inner{padding:0 16px}
 
-    .split{height:auto}
-    .split-text{
-      position:relative;width:100%;
-      padding:48px 32px;
-    }
-    .split-text-inner{padding:0;max-width:none}
-    .split-img{
-      position:relative;width:100%;height:280px;
-      clip-path:none;
-    }
-    .split-stat .num{font-size:64px}
+    .stat-strip{padding:48px 0}
+    .stat-strip-inner{padding:0 24px}
+    .stat-strip-top{padding-bottom:32px;margin-bottom:32px}
+    .stat-strip-bottom{gap:16px}
+    .stat-strip-divider{height:48px}
 
     .services-grid{grid-template-columns:1fr;gap:48px}
     .laptop{max-width:520px;margin:0 auto}
@@ -495,14 +489,15 @@
     .hero-dot{width:6px;height:6px}
     .hero-dot.active{width:8px;height:8px}
 
-    /* split */
-    .split-text{padding:32px 16px}
-    .split-img{height:240px}
-    .split-body{font-size:14px}
-    .split-stat{margin-bottom:24px;gap:14px}
-    .split-stat .num{font-size:64px}
-    .split-cta-row{flex-direction:column;align-items:stretch;gap:18px}
-    .split-cta-row .pill{justify-content:center;width:100%;min-height:44px}
+    /* stat strip */
+    .stat-strip{padding:40px 0}
+    .stat-strip-inner{padding:0 16px}
+    .stat-strip-top{grid-template-columns:1fr;gap:16px;padding-bottom:24px;margin-bottom:24px}
+    .stat-strip-headline{font-size:24px}
+    .stat-strip-cta{width:100%;min-height:44px}
+    .stat-strip-bottom{grid-template-columns:1fr;gap:24px}
+    .stat-strip-divider{width:60%;height:1px;justify-self:center}
+    .stat-strip-stat .num{font-size:44px}
 
     /* services */
     .services{padding:48px 0}
@@ -656,30 +651,41 @@
   </div>
 </section>
 
-<!-- 3. DIAGONAL SPLIT -->
-<section class="split" id="split">
-  <div class="split-img" id="split-img" style="background-image:url('https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg')"></div>
-  <div class="split-text">
-    <div class="split-text-inner">
-      <div class="split-eyebrow"><span>راوي ينقل القصة · </span><span class="lat">RAWI TELLS THE STORY</span><span class="dot">·</span></div>
-      <h2 class="split-headline" id="split-headline">
-        محتوى إخباري احترافي يضع جمهورك في <span class="accent">قلب كل قصة.</span>
-      </h2>
-      <div class="split-body" id="split-body">
-        <p>من اللحظات التي يشاهدها العالم إلى التغطيات المخصصة، نقدّم القصص التي يطلبها جمهورك.</p>
-        <p>محتوانا يغطي أكثر من ٤٠ نوع من الأحداث، شامل اللقطات الحصرية، الأخبار العاجلة، معاينات المباريات، وملفات الشخصيات.</p>
-      </div>
-      <div class="split-stat">
-        <div class="num" id="split-num">5min</div>
-        <div class="label" id="split-label">الوقت من الحدث للبث<span class="lat">EVENT TO BROADCAST</span></div>
-      </div>
-      <div class="split-cta-row">
-        <a href="#" class="pill pill-red pill-cta">تعرّف على الفرق الذي يصنعه راوي ←</a>
-        <div class="split-dots" id="split-dots">
-          <button class="split-dot active" data-i="0" aria-label="1"></button>
-          <button class="split-dot" data-i="1" aria-label="2"></button>
-          <button class="split-dot" data-i="2" aria-label="3"></button>
+<!-- 3. COMPACT STAT STRIP -->
+<section class="stat-strip">
+  <div class="stat-strip-inner">
+    <div class="stat-strip-top">
+      <div>
+        <div class="stat-strip-eyebrow">
+          <span class="dot"></span>
+          <span>راوي ينقل القصة · </span><span class="lat">RAWI TELLS THE STORY</span>
         </div>
+        <h2 class="stat-strip-headline">
+          محتوى إخباري احترافي يضع جمهورك في <span class="accent">قلب كل قصة.</span>
+        </h2>
+      </div>
+      <div>
+        <p class="stat-strip-body">من اللحظات التي يشاهدها العالم إلى التغطيات المخصصة، نقدّم القصص التي يطلبها جمهورك. محتوانا يغطي أكثر من ٤٠ نوع من الأحداث.</p>
+        <a href="#" class="stat-strip-cta">تعرّف على الفرق الذي يصنعه راوي ←</a>
+      </div>
+    </div>
+    <div class="stat-strip-bottom">
+      <div class="stat-strip-stat">
+        <div class="num lat">5min</div>
+        <div class="ar">الوقت من الحدث للبث</div>
+        <div class="en lat">Event-to-Air</div>
+      </div>
+      <div class="stat-strip-divider"></div>
+      <div class="stat-strip-stat">
+        <div class="num lat">+10,000</div>
+        <div class="ar">ساعة محتوى سنوياً</div>
+        <div class="en lat">Annual Content</div>
+      </div>
+      <div class="stat-strip-divider"></div>
+      <div class="stat-strip-stat">
+        <div class="num lat">24/7</div>
+        <div class="ar">تغطية مستمرة</div>
+        <div class="en lat">Newsroom Coverage</div>
       </div>
     </div>
   </div>
@@ -703,27 +709,27 @@
       <div>
         <div class="service-list">
           <div class="service">
-            <div class="service-icon"><i data-lucide="video"></i></div>
+            <div class="service-icon"><i data-lucide="clapperboard"></i></div>
             <div>
-              <h3 class="service-title">محتوى الفيديو الإخباري</h3>
-              <span class="service-sub">Sports News Video Content</span>
-              <p class="service-body">مزيج فريد من <b>اللقطات الحصرية</b> والمحتوى المختار بعناية يصل لك بصيغ متعددة تلائم احتياجات <b>المنصات التلفزيونية والرقمية والاجتماعية</b>.</p>
+              <h3 class="service-title">الإنتاج</h3>
+              <span class="service-sub">Production</span>
+              <p class="service-body">مزيج فريد من <b>اللقطات الميدانية الحصرية</b> والمحتوى المُنتج بمعايير البث التلفزيوني، يصل لك بصيغ متعددة تلائم احتياجات <b>المنصات التلفزيونية والرقمية والاجتماعية</b>. كل مادة تمر على معايير تحريرية موحّدة قبل النشر.</p>
             </div>
           </div>
           <div class="service">
-            <div class="service-icon"><i data-lucide="calendar"></i></div>
+            <div class="service-icon"><i data-lucide="radio-tower"></i></div>
             <div>
-              <h3 class="service-title">تغطية الأحداث الكبرى</h3>
-              <span class="service-sub">Key Events Coverage</span>
-              <p class="service-body">لأكثر من <b>20 سنة</b> راوي مصدر موثوق لتغطية أبرز <b>الأحداث الرياضية والثقافية</b> في المملكة والمنطقة.</p>
+              <h3 class="service-title">التوزيع</h3>
+              <span class="service-sub">Distribution</span>
+              <p class="service-body">وصول فوري للمحتوى عبر <b>شبكتنا الإعلامية الموسّعة</b> — قنوات تلفزيونية، صحفيون، ومنصات رقمية في أنحاء المنطقة. وقت الوصول من الحدث للبث: <b>5 دقائق</b>، بصيغ HD و 4K للتلفزيون وصيغ عمودية للسوشيال ميديا.</p>
             </div>
           </div>
           <div class="service">
-            <div class="service-icon"><i data-lucide="download"></i></div>
+            <div class="service-icon"><i data-lucide="bar-chart-3"></i></div>
             <div>
-              <h3 class="service-title">الأرشيف والمحتوى التاريخي</h3>
-              <span class="service-sub">Archive Services</span>
-              <p class="service-body">أثرِ روايتك بمحتوى من <b>أرشيفنا الإخباري</b> الذي يغطي اللحظات التي صنعت المنطقة على مدى <b>عقدين</b>.</p>
+              <h3 class="service-title">التقارير</h3>
+              <span class="service-sub">Reporting</span>
+              <p class="service-body">تقارير مفصّلة عن <b>الانتشار والأثر</b> لكل محتوى تنشره — من عدد القنوات التي بثّت المادة، إلى معدلات المشاهدة والتفاعل، بشفافية كاملة. كل عميل يحصل على <b>لوحة تحكم خاصة</b> لمتابعة الأداء.</p>
             </div>
           </div>
         </div>
@@ -1007,60 +1013,6 @@
       eyebrowEl.textContent = `RAWI PRESS · ${num} / 0${total}`;
     }
     function start(){ timer = setInterval(()=>go(i+1), 6000); }
-    function reset(){ clearInterval(timer); start(); }
-    dots.forEach(d=>d.addEventListener('click', ()=>{ go(parseInt(d.dataset.i)); reset(); }));
-    start();
-  })();
-
-  // diagonal split slider
-  (function(){
-    const headlineEl = document.getElementById('split-headline');
-    const bodyEl     = document.getElementById('split-body');
-    const numEl      = document.getElementById('split-num');
-    const labelEl    = document.getElementById('split-label');
-    const imgEl      = document.getElementById('split-img');
-    const dots       = document.querySelectorAll('.split-dot');
-    const states = [
-      {
-        headline:'محتوى إخباري احترافي يضع جمهورك في {قلب كل قصة.}',
-        body:[
-          'من اللحظات التي يشاهدها العالم إلى التغطيات المخصصة، نقدّم القصص التي يطلبها جمهورك.',
-          'محتوانا يغطي أكثر من ٤٠ نوع من الأحداث، شامل اللقطات الحصرية، الأخبار العاجلة، معاينات المباريات، وملفات الشخصيات.'
-        ],
-        num:'5min', label:'الوقت من الحدث للبث', labelLat:'EVENT TO BROADCAST',
-        img:'https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg'
-      },
-      {
-        headline:'مكتبة محتوى {جاهزة للبث يومياً} لغرف أخبار المنطقة.',
-        body:[
-          'فيديو مقطوع، نسخ متعددة الأبعاد، ولقطات وصفية جاهزة للنشر — تصلك مع كل تحديث.',
-          'فرقنا التحريرية تعمل على مدار الساعة لتزويد شركائنا بمواد منسقة ومدققة جاهزة للبث الفوري.'
-        ],
-        num:'100+', label:'مادة جاهزة للبث يومياً', labelLat:'PUBLISH-READY DAILY',
-        img:'https://admin.rawipress.com/media/243/WXD80vUIys4sY8UJSutO6PKsMkQB7GIrvKRK5j2X.jpg'
-      },
-      {
-        headline:'تغطية {مستمرة من قلب الرياض} طوال أيام الأسبوع.',
-        body:[
-          'غرفة أخبار حية تنقل الحدث لحظة بلحظة، من الأحداث الرياضية الكبرى إلى الفعاليات الثقافية.',
-          'شبكة مراسلين موزعة على المنطقة تضمن تغطية شاملة وموثوقة في الوقت الحقيقي.'
-        ],
-        num:'24/7', label:'تغطية مستمرة من الرياض', labelLat:'LIVE FROM RIYADH',
-        img:'https://admin.rawipress.com/media/264/kTpQ0Gw2pOffQn5nnSTm1RvSmlZPZcDdvuvD5hZp.jpg'
-      }
-    ];
-    let i = 0, timer;
-    function render(){
-      const s = states[i];
-      headlineEl.innerHTML = s.headline.replace(/\{(.+?)\}/, '<span class="accent">$1</span>');
-      bodyEl.innerHTML = s.body.map(p=>`<p>${p}</p>`).join('');
-      numEl.textContent = s.num;
-      labelEl.innerHTML = `${s.label}<span class="lat">${s.labelLat}</span>`;
-      imgEl.style.backgroundImage = `url('${s.img}')`;
-      dots.forEach((d,k)=>d.classList.toggle('active', k===i));
-    }
-    function go(n){ i = (n + states.length) % states.length; render(); }
-    function start(){ timer = setInterval(()=>go(i+1), 8000); }
     function reset(){ clearInterval(timer); start(); }
     dots.forEach(d=>d.addEventListener('click', ()=>{ go(parseInt(d.dataset.i)); reset(); }));
     start();
