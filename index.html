@@ -45,16 +45,12 @@
     height:100%;display:flex;align-items:center;justify-content:space-between;
     max-width:1320px;margin:0 auto;padding:0 32px;
   }
-  .logo-wrap{
-    display:flex;align-items:center;
-    height:46px;
-  }
+  .logo-wrap{display:flex;align-items:center;height:46px}
   .logo-wrap img{height:36px;width:auto;display:block}
   .nav{display:flex;align-items:center;gap:28px}
   .nav-link{
     font-size:14px;font-weight:500;color:#555;
-    display:inline-flex;align-items:center;gap:4px;
-    transition:color .2s;
+    display:inline-flex;align-items:center;gap:4px;transition:color .2s;
   }
   .nav-link:hover{color:var(--red)}
   .nav-link .caret{font-size:10px;opacity:.7;transform:translateY(1px)}
@@ -62,9 +58,7 @@
   .pill{
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
     padding:10px 22px;border-radius:999px;
-    font-size:14px;font-weight:500;
-    transition:all .2s;
-    white-space:nowrap;
+    font-size:14px;font-weight:500;transition:all .2s;white-space:nowrap;
   }
   .pill-black{background:#0a0a0a;color:#fff}
   .pill-black:hover{background:#222}
@@ -74,10 +68,54 @@
   .pill-outline:hover{background:rgba(255,255,255,0.1);border-color:#fff}
   .pill-cta{padding:12px 28px}
 
-  /* ─────────── hero ─────────── */
-  .hero{
-    position:relative;height:75vh;min-height:560px;overflow:hidden;background:#0a0a0a;
+  /* mobile menu button + drawer */
+  .menu-btn{
+    display:none;width:42px;height:42px;border-radius:10px;
+    align-items:center;justify-content:center;
+    background:transparent;border:1px solid var(--border-medium);
+    color:var(--text);transition:all .2s;
   }
+  .menu-btn:hover{border-color:var(--red);color:var(--red)}
+  .menu-btn svg{width:22px;height:22px;stroke-width:2}
+  .menu-overlay{
+    position:fixed;inset:0;z-index:80;
+    background:rgba(10,10,10,0.55);
+    opacity:0;pointer-events:none;transition:opacity .25s;
+  }
+  .menu-overlay.open{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;bottom:0;inset-inline-end:0;z-index:90;
+    width:min(86vw,360px);background:#fff;
+    transform:translateX(100%);
+    transition:transform .3s ease;
+    display:flex;flex-direction:column;
+    box-shadow:-20px 0 40px rgba(0,0,0,0.18);
+  }
+  .drawer.open{transform:translateX(0)}
+  .drawer-head{
+    display:flex;align-items:center;justify-content:space-between;
+    height:80px;padding:0 22px;border-bottom:1px solid var(--border-light);
+  }
+  .drawer-head img{height:30px;width:auto}
+  .drawer-close{
+    width:38px;height:38px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--offwhite);color:var(--text);
+  }
+  .drawer-close svg{width:20px;height:20px}
+  .drawer-nav{display:flex;flex-direction:column;padding:18px 22px;gap:2px;flex:1;overflow-y:auto}
+  .drawer-nav a{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 4px;font-size:16px;font-weight:500;color:var(--text);
+    border-bottom:1px solid var(--border-light);
+  }
+  .drawer-nav a:hover{color:var(--red)}
+  .drawer-nav a .arr{font-size:14px;color:var(--text-3)}
+  .drawer-cta{padding:18px 22px 26px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border-light)}
+  .drawer-cta .pill{justify-content:center;padding:14px 22px;font-size:15px;width:100%}
+
+  /* ─────────── hero ─────────── */
+  .hero{position:relative;height:75vh;min-height:560px;overflow:hidden;background:#0a0a0a}
   .hero-slide{
     position:absolute;inset:0;
     background-size:cover;background-position:center;
@@ -95,15 +133,13 @@
   }
   .hero-eyebrow{
     color:var(--red);font-size:11px;font-weight:600;
-    text-transform:uppercase;letter-spacing:0.2em;
-    margin-bottom:20px;
+    text-transform:uppercase;letter-spacing:0.2em;margin-bottom:20px;
     font-family:'IBM Plex Sans',sans-serif;
   }
   .hero-title{
     color:#fff;font-size:clamp(36px,5.2vw,62px);
     font-weight:700;line-height:1.1;
-    max-width:900px;margin-bottom:36px;
-    text-wrap:balance;
+    max-width:900px;margin-bottom:36px;text-wrap:balance;
   }
   .hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
   .hero-dots{
@@ -111,73 +147,60 @@
     display:flex;gap:12px;align-items:center;
   }
   .hero-dot{
-    width:8px;height:8px;border-radius:999px;
-    background:rgba(255,255,255,0.5);
+    width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,0.5);
     transition:all .25s;cursor:pointer;border:none;padding:0;
   }
   .hero-dot.active{background:var(--red);width:10px;height:10px}
 
-  /* ─────────── compact stat strip (was diagonal split) ─────────── */
-  .strip{
-    position:relative;background:#fff;
-    border-top:1px solid var(--border-light);
-    border-bottom:1px solid var(--border-light);
-    padding:64px 0;
+  /* ─────────── diagonal split (SNTV signature) ─────────── */
+  .split{position:relative;height:600px;background:#fff;overflow:hidden}
+  .split-text{
+    position:absolute;inset:0 0 0 0;
+    width:55%;padding:80px 64px 80px 0;padding-inline-start:0;padding-inline-end:64px;
+    display:flex;flex-direction:column;justify-content:center;
+    z-index:2;
   }
-  .strip-inner{
-    max-width:1280px;margin:0 auto;padding:0 32px;
-    display:grid;grid-template-columns:auto 1fr auto;gap:56px;align-items:center;
+  .split-eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--text);font-family:'IBM Plex Sans',sans-serif;
+    display:flex;align-items:center;gap:6px;margin-bottom:22px;
   }
-  .strip-stat{
-    display:flex;flex-direction:column;align-items:flex-start;
+  .split-eyebrow .dot{color:var(--red);font-size:18px;line-height:0}
+  .split-headline{
+    font-size:44px;font-weight:700;line-height:1.15;color:var(--text);
+    margin-bottom:24px;text-wrap:balance;
+  }
+  .split-headline .accent{color:var(--red)}
+  .split-body{
+    color:var(--text-2);font-size:16px;line-height:1.7;margin-bottom:28px;
+    max-width:560px;
+  }
+  .split-body p+p{margin-top:14px}
+  .split-stat{
+    display:flex;align-items:center;gap:18px;
     border-inline-start:3px solid var(--red);
-    padding-inline-start:20px;min-width:200px;
+    padding-inline-start:18px;margin-bottom:36px;
   }
-  .strip-stat .num{
-    font-size:88px;font-weight:300;color:var(--red);
-    line-height:0.95;letter-spacing:-0.03em;
+  .split-stat .num{
+    font-size:80px;font-weight:300;color:var(--red);
+    line-height:1;letter-spacing:-0.03em;
     font-family:'IBM Plex Sans',sans-serif;direction:ltr;
   }
-  .strip-stat .label{
-    font-size:13px;color:var(--text-2);margin-top:6px;
-    font-weight:500;
-  }
-  .strip-stat .label .lat{display:block;font-size:11px;opacity:.7;letter-spacing:0.08em;margin-top:2px}
-  .strip-mid{display:flex;flex-direction:column;gap:14px;min-width:0}
-  .strip-headline{
-    font-size:28px;font-weight:600;line-height:1.3;
-    color:var(--text);text-wrap:balance;
-  }
-  .strip-headline .accent{color:var(--red)}
-  .strip-meta{
-    display:flex;align-items:center;gap:18px;
-    font-size:12px;color:var(--text-3);
-    font-family:'IBM Plex Sans',sans-serif;
-    letter-spacing:0.12em;text-transform:uppercase;
-  }
-  .strip-meta .pulse{
-    width:8px;height:8px;border-radius:999px;background:var(--red);
-    box-shadow:0 0 0 0 rgba(200,32,42,0.5);
-    animation:pulse 1.8s ease-out infinite;
-  }
-  @keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(200,32,42,0.5)}
-    100%{box-shadow:0 0 0 12px rgba(200,32,42,0)}
-  }
-  .strip-meta .sep{color:var(--border-medium)}
-  .strip-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
-  .strip-dots{display:flex;gap:8px}
-  .strip-dot{
+  .split-stat .label{font-size:14px;color:var(--text-2);font-weight:500;line-height:1.4}
+  .split-stat .label .lat{display:block;font-size:11px;opacity:.65;letter-spacing:0.08em;margin-top:4px}
+  .split-cta-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .split-dots{display:flex;gap:8px}
+  .split-dot{
     width:24px;height:3px;border-radius:2px;background:#e0e0e0;
     cursor:pointer;border:none;transition:all .25s;padding:0;
   }
-  .strip-dot.active{background:var(--red);width:36px}
-  @media (max-width:900px){
-    .strip-inner{grid-template-columns:1fr;gap:24px}
-    .strip-right{align-items:flex-start}
-    .strip-stat .num{font-size:64px}
-    .strip-headline{font-size:22px}
+  .split-dot.active{background:var(--red);width:36px}
+  .split-img{
+    position:absolute;top:0;bottom:0;inset-inline-start:50%;width:55%;
+    background-size:cover;background-position:center;
+    clip-path:polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
   }
+  .split-text-inner{padding-inline-start:max(32px,calc((100vw - 1280px)/2 + 32px));max-width:760px}
 
   /* ─────────── services ─────────── */
   .services{padding:120px 0;background:#fff}
@@ -188,9 +211,7 @@
   }
   .section-eyebrow .dot{color:var(--red);font-size:18px;line-height:0}
   .section-eyebrow.center{justify-content:center;text-align:center}
-  .services-grid{
-    display:grid;grid-template-columns:42% 1fr;gap:80px;align-items:center;
-  }
+  .services-grid{display:grid;grid-template-columns:42% 1fr;gap:80px;align-items:center}
   .laptop{
     position:relative;background:linear-gradient(180deg,#e8e8e8 0%,#cfcfcf 100%);
     border-radius:14px 14px 4px 4px;padding:14px 14px 18px;
@@ -203,9 +224,7 @@
   }
   .laptop-screen{
     background:#000;border-radius:6px;overflow:hidden;
-    aspect-ratio:16/10;
-    background-size:cover;background-position:center;
-    position:relative;
+    aspect-ratio:16/10;background-size:cover;background-position:center;position:relative;
   }
   .laptop-screen::before{
     content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(0,0,0,0.4));
@@ -214,8 +233,7 @@
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
     width:62px;height:62px;border-radius:999px;
     background:rgba(255,255,255,0.92);
-    display:flex;align-items:center;justify-content:center;
-    color:var(--red);
+    display:flex;align-items:center;justify-content:center;color:var(--red);
   }
   .laptop-play svg{width:22px;height:22px;margin-inline-start:3px}
   .laptop-bottom{
@@ -227,13 +245,8 @@
   .laptop-bar::after{content:"";position:absolute;top:0;bottom:0;right:0;width:38%;background:var(--red)}
 
   .service-list{display:flex;flex-direction:column;gap:36px}
-  .service{
-    display:grid;grid-template-columns:48px 1fr;gap:20px;align-items:start;
-  }
-  .service-icon{
-    width:48px;height:48px;display:flex;align-items:center;justify-content:center;
-    color:var(--red);
-  }
+  .service{display:grid;grid-template-columns:48px 1fr;gap:20px;align-items:start}
+  .service-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--red)}
   .service-icon svg{width:36px;height:36px;stroke-width:1.5}
   .service-title{font-size:22px;font-weight:600;line-height:1.25;margin-bottom:2px}
   .service-sub{font-size:12px;font-style:italic;color:var(--text-3);margin-bottom:10px;font-family:'IBM Plex Sans',sans-serif;direction:ltr;display:block}
@@ -249,8 +262,7 @@
   .ticker-label{
     background:#000;padding:0 18px;height:100%;display:flex;align-items:center;
     font-size:12px;font-weight:600;letter-spacing:0.05em;
-    border-inline-start:2px solid var(--red);
-    flex-shrink:0;
+    border-inline-start:2px solid var(--red);flex-shrink:0;
   }
   .ticker-track{
     display:flex;gap:48px;padding-inline:32px;
@@ -261,32 +273,22 @@
   .ticker-item{font-size:13px;color:#e5e5e5}
   .ticker-item .red-dot{color:var(--red);margin:0 10px}
   .ticker-item .ts{color:#999;margin-inline-start:8px;font-family:'IBM Plex Mono',monospace;font-size:11px}
-  @keyframes tick{
-    0%{transform:translateX(0)}
-    100%{transform:translateX(50%)}
-  }
+  @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
 
   /* ─────────── updates grid ─────────── */
   .updates{background:var(--offwhite);padding:96px 0}
   .updates-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:36px}
   .updates-more{font-size:13px;color:var(--text-2);border-bottom:1px solid var(--text-2);padding-bottom:2px}
   .updates-more:hover{color:var(--red);border-color:var(--red)}
-  .updates-grid{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
-  }
+  .updates-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
   .upd-card{background:#fff;overflow:hidden;border-radius:8px;display:flex;flex-direction:column}
   .upd-card.span2{grid-column:span 2}
   .upd-card-red{
-    background:var(--red);color:#fff;
-    padding:48px;display:flex;flex-direction:column;justify-content:space-between;
-    min-height:300px;
+    background:var(--red);color:#fff;padding:48px;
+    display:flex;flex-direction:column;justify-content:space-between;min-height:300px;
   }
-  .upd-card-red .brandmark{
-    width:46px;height:46px;display:flex;align-items:center;justify-content:center;
-    background:rgba(255,255,255,0.12);border-radius:8px;
-  }
+  .upd-card-red .brandmark{display:flex;align-items:center}
   .upd-card-red .brandmark img{height:22px;width:auto}
-  .upd-card-red .brandmark{width:auto;background:transparent;padding:0}
   .upd-card-red h3{font-size:32px;font-weight:700;line-height:1.2;margin-top:auto}
   .upd-card-red .lat{display:block;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;opacity:.8;margin-top:10px}
   .upd-text{padding:32px;display:flex;flex-direction:column;flex:1;gap:16px}
@@ -308,11 +310,9 @@
   .upd-img > *{position:relative;z-index:2}
   .upd-img h4{font-size:20px;font-weight:700;line-height:1.25;margin-bottom:8px}
   .upd-img p{font-size:13px;opacity:.9;margin-bottom:16px;line-height:1.55}
+
   /* row 2 events */
-  .event-card{
-    background:#fff;border-radius:8px;overflow:hidden;
-    display:flex;flex-direction:column;
-  }
+  .event-card{background:#fff;border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
   .event-img{
     height:170px;background-size:cover;background-position:center;
     clip-path:polygon(0 0, 100% 0, 100% 88%, 0% 100%);
@@ -325,32 +325,21 @@
   }
   .event-cat{
     font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
-    opacity:.85;margin-bottom:8px;font-family:'IBM Plex Sans Arabic',sans-serif;
-    margin-top:14px;
+    opacity:.85;margin-bottom:8px;font-family:'IBM Plex Sans Arabic',sans-serif;margin-top:14px;
   }
   .event-name{font-size:18px;font-weight:700;line-height:1.25;margin-bottom:10px}
   .event-meta{font-size:12px;opacity:.85;line-height:1.55}
-  .event-icon{
-    position:absolute;bottom:18px;left:18px;width:24px;height:24px;
-    color:rgba(255,255,255,0.65);
-  }
+  .event-icon{position:absolute;bottom:18px;left:18px;width:24px;height:24px;color:rgba(255,255,255,0.65)}
   .event-icon svg{width:100%;height:100%;stroke-width:1.5}
 
   /* ─────────── stat band ─────────── */
   .statband{
     position:relative;height:400px;overflow:hidden;
     background-size:cover;background-position:center;
-    display:flex;align-items:center;
-    color:#fff;
+    display:flex;align-items:center;color:#fff;
   }
-  .statband::before{
-    content:"";position:absolute;inset:0;
-    background:rgba(0,0,0,0.5);
-  }
-  .statband::after{
-    content:"";position:absolute;inset:0;
-    background:var(--red);mix-blend-mode:multiply;opacity:0.3;
-  }
+  .statband::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.5)}
+  .statband::after{content:"";position:absolute;inset:0;background:var(--red);mix-blend-mode:multiply;opacity:0.3}
   .statband .container{position:relative;z-index:2}
   .statband .num{font-size:clamp(72px,9vw,128px);font-weight:300;line-height:1;letter-spacing:-0.03em;margin-bottom:18px}
   .statband .ar{font-size:24px;font-weight:500;margin-bottom:6px}
@@ -358,24 +347,17 @@
 
   /* ─────────── partners ─────────── */
   .partners{background:#fff;padding:80px 0}
-  .partners-row{
-    display:flex;align-items:center;gap:48px;justify-content:center;
-    margin-top:48px;flex-wrap:wrap;
-  }
+  .partners-row{display:flex;align-items:center;gap:48px;justify-content:center;margin-top:48px;flex-wrap:wrap}
   .partner-logo{
     color:#999;font-size:22px;font-weight:600;letter-spacing:0.02em;
-    font-family:'IBM Plex Sans',sans-serif;
-    transition:color .2s;
-    direction:ltr;
-    white-space:nowrap;
+    font-family:'IBM Plex Sans',sans-serif;transition:color .2s;direction:ltr;white-space:nowrap;
   }
   .partner-logo.ar{font-family:'IBM Plex Sans Arabic',sans-serif;direction:rtl}
   .partner-logo:hover{color:var(--text)}
   .partners-arrows{display:flex;justify-content:center;gap:12px;margin-top:36px}
   .partners-arrow{
     width:40px;height:40px;border:1px solid var(--border-medium);border-radius:999px;
-    display:flex;align-items:center;justify-content:center;color:var(--text-2);
-    transition:all .2s;
+    display:flex;align-items:center;justify-content:center;color:var(--text-2);transition:all .2s;
   }
   .partners-arrow:hover{border-color:var(--red);color:var(--red)}
   .partners-arrow svg{width:16px;height:16px}
@@ -389,21 +371,15 @@
   .show-head a{font-size:11px;color:var(--text-2)}
   .show-head a:hover{color:var(--red)}
   .show-body{display:flex;flex-direction:column;gap:14px}
-  .show-img{
-    aspect-ratio:4/3;background-size:cover;background-position:center;
-    border-radius:6px;overflow:hidden;
-    position:relative;
-  }
+  .show-img{aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:6px;overflow:hidden;position:relative}
   .show-img.video::after{
     content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
     width:54px;height:54px;border-radius:999px;background:rgba(255,255,255,0.92);
   }
   .show-img.video::before{
     content:"";position:absolute;top:50%;left:50%;
-    transform:translate(calc(-50% + 3px),-50%);
-    z-index:2;
-    border-style:solid;
-    border-width:9px 0 9px 14px;
+    transform:translate(calc(-50% + 3px),-50%);z-index:2;
+    border-style:solid;border-width:9px 0 9px 14px;
     border-color:transparent transparent transparent var(--red);
   }
   .show-card-red{
@@ -416,10 +392,8 @@
   .show-card-red .handle{font-size:14px;opacity:.9;font-family:'IBM Plex Sans',sans-serif;direction:ltr}
   .show-img-overlay{
     aspect-ratio:4/3;background-size:cover;background-position:center;
-    border-radius:6px;overflow:hidden;
-    position:relative;
-    display:flex;flex-direction:column;justify-content:flex-end;
-    padding:24px;color:#fff;
+    border-radius:6px;overflow:hidden;position:relative;
+    display:flex;flex-direction:column;justify-content:flex-end;padding:24px;color:#fff;
   }
   .show-img-overlay::before{
     content:"";position:absolute;inset:0;
@@ -434,10 +408,7 @@
 
   /* ─────────── footer ─────────── */
   .footer{background:var(--red-deep);color:#fff}
-  .footer-top{
-    background:var(--red-deeper);height:48px;
-    display:flex;align-items:center;
-  }
+  .footer-top{background:var(--red-deeper);height:48px;display:flex;align-items:center}
   .footer-top .container{display:flex;justify-content:space-between;align-items:center;gap:16px}
   .footer-top img{height:18px;width:auto}
   .footer-top .tag{font-size:12px;opacity:.85;font-family:'IBM Plex Sans Arabic',sans-serif}
@@ -461,79 +432,29 @@
   .footer-contact-block .pill:hover{background:#fff;color:var(--red-deep);border-color:#fff}
   .footer-address{font-size:12px;opacity:.85;line-height:1.7}
   .footer-address a{display:block;margin-top:6px;text-decoration:underline;text-decoration-color:rgba(255,255,255,0.4);text-underline-offset:3px}
-  .footer-bottom{
-    background:#0d2b2e;
-    padding:0;height:36px;
-    display:flex;align-items:center;
-  }
+  .footer-bottom{background:#0d2b2e;padding:0;height:36px;display:flex;align-items:center}
   .footer-bottom .container{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;opacity:.85}
   .footer-bottom .links{display:flex;gap:18px}
   .footer-bottom .links a:hover{color:var(--red)}
   .footer-bottom .right{display:flex;align-items:center;gap:14px;font-family:'IBM Plex Mono',monospace}
 
-  /* ─────────── mobile menu (hamburger + drawer) ─────────── */
-  .menu-btn{
-    display:none;width:42px;height:42px;border-radius:10px;
-    align-items:center;justify-content:center;
-    background:transparent;border:1px solid var(--border-medium);
-    color:var(--text);transition:all .2s;
-  }
-  .menu-btn:hover{border-color:var(--red);color:var(--red)}
-  .menu-btn svg{width:22px;height:22px;stroke-width:2}
-  .menu-overlay{
-    position:fixed;inset:0;z-index:80;
-    background:rgba(10,10,10,0.55);
-    opacity:0;pointer-events:none;transition:opacity .25s;
-  }
-  .menu-overlay.open{opacity:1;pointer-events:auto}
-  .drawer{
-    position:fixed;top:0;bottom:0;inset-inline-end:0;z-index:90;
-    width:min(86vw,360px);background:#fff;
-    transform:translateX(-100%);
-    transition:transform .3s ease;
-    display:flex;flex-direction:column;
-    box-shadow:-20px 0 40px rgba(0,0,0,0.18);
-  }
-  html[dir="rtl"] .drawer{transform:translateX(100%)}
-  .drawer.open{transform:translateX(0) !important}
-  .drawer-head{
-    display:flex;align-items:center;justify-content:space-between;
-    height:80px;padding:0 22px;border-bottom:1px solid var(--border-light);
-  }
-  .drawer-head img{height:30px;width:auto}
-  .drawer-close{
-    width:38px;height:38px;border-radius:8px;
-    display:flex;align-items:center;justify-content:center;
-    background:var(--offwhite);color:var(--text);
-  }
-  .drawer-close svg{width:20px;height:20px}
-  .drawer-nav{
-    display:flex;flex-direction:column;
-    padding:18px 22px;gap:2px;flex:1;overflow-y:auto;
-  }
-  .drawer-nav a{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:16px 4px;font-size:16px;font-weight:500;
-    color:var(--text);
-    border-bottom:1px solid var(--border-light);
-  }
-  .drawer-nav a:hover{color:var(--red)}
-  .drawer-nav a .arr{font-size:14px;color:var(--text-3)}
-  .drawer-cta{padding:18px 22px 26px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border-light)}
-  .drawer-cta .pill{justify-content:center;padding:14px 22px;font-size:15px;width:100%}
-
   /* ─────────── responsive ─────────── */
   @media (max-width:1024px){
     .hero-title{font-size:42px}
+    .split{height:auto}
+    .split-text{position:relative;width:100%;padding:64px 32px;padding-inline-start:32px;padding-inline-end:32px}
+    .split-text-inner{padding:0;max-width:none}
+    .split-img{position:relative;width:100%;height:280px;inset-inline-start:auto;clip-path:polygon(0 0, 100% 0, 100% 92%, 0% 100%)}
+    .split-headline{font-size:34px}
+    .split-stat .num{font-size:64px}
     .services-grid{grid-template-columns:1fr;gap:48px}
+    .laptop{max-width:520px;margin:0 auto}
     .updates-grid{grid-template-columns:repeat(2,1fr)}
     .upd-card.span2{grid-column:span 2}
     .showcase-grid{grid-template-columns:repeat(2,1fr)}
     .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
-    .laptop{max-width:520px;margin:0 auto}
   }
   @media (max-width:768px){
-    /* header — hide desktop nav, show hamburger */
     .nav{display:none}
     .menu-btn{display:inline-flex}
     .site-header{height:64px}
@@ -541,32 +462,24 @@
     .logo-wrap img{height:28px}
     .header-inner{padding:0 16px}
     .container{padding:0 18px}
-
-    /* hero */
     .hero{height:auto;min-height:560px;padding:96px 0 88px}
     .hero-eyebrow{font-size:10px;margin-bottom:14px}
     .hero-title{font-size:30px;line-height:1.18;margin-bottom:28px;padding:0 4px}
     .hero-actions{flex-direction:column;width:100%;max-width:320px;gap:10px}
     .hero-actions .pill{width:100%;padding:14px 22px}
     .hero-dots{bottom:22px;gap:10px}
-
-    /* compact strip */
-    .strip{padding:40px 0}
-    .strip-inner{padding:0 18px;gap:22px}
-    .strip-stat{padding-inline-start:16px;min-width:0;border-inline-start-width:3px}
-    .strip-stat .num{font-size:56px}
-    .strip-stat .label{font-size:12px}
-    .strip-headline{font-size:20px;line-height:1.4}
-    .strip-meta{font-size:11px;letter-spacing:0.08em;flex-wrap:wrap;gap:10px}
-    .strip-right{align-items:stretch;gap:16px}
-    .strip-right .pill{justify-content:center;width:100%}
-    .strip-dots{justify-content:flex-start}
-
-    /* services */
+    .split-text{padding:48px 22px}
+    .split-headline{font-size:26px}
+    .split-body{font-size:14px}
+    .split-stat .num{font-size:54px}
+    .split-stat{margin-bottom:24px}
+    .split-cta-row{flex-direction:column;align-items:stretch;gap:18px}
+    .split-cta-row .pill{justify-content:center;width:100%}
+    .split-img{height:240px}
     .services{padding:72px 0}
     .section-eyebrow{margin-bottom:32px;font-size:11px}
     .services-grid{gap:36px}
-    .laptop{padding:10px 10px 14px;border-radius:10px 10px 4px 4px;max-width:100%}
+    .laptop{padding:10px 10px 14px;max-width:100%}
     .service{grid-template-columns:40px 1fr;gap:14px}
     .service-icon{width:40px;height:40px}
     .service-icon svg{width:30px;height:30px}
@@ -575,19 +488,14 @@
     .service-list{gap:28px}
     .services-cta{margin-top:32px}
     .services-cta .pill{display:block;text-align:center}
-
-    /* ticker */
     .ticker-label{padding:0 14px;font-size:11px}
     .ticker-item{font-size:12px}
-
-    /* updates */
     .updates{padding:64px 0}
     .updates-head{margin-bottom:24px;flex-wrap:wrap;gap:12px}
     .updates-grid{grid-template-columns:1fr;gap:14px}
     .upd-card.span2{grid-column:span 1}
     .upd-card-red{padding:32px;min-height:220px}
     .upd-card-red h3{font-size:24px}
-    .upd-card-red .lat{font-size:11px}
     .upd-text{padding:24px;gap:12px}
     .upd-text h4{font-size:17px}
     .upd-img{height:240px;padding:22px}
@@ -595,28 +503,20 @@
     .event-img{height:150px}
     .event-body{padding:18px 18px 22px;margin-top:-20px}
     .event-name{font-size:16px}
-
-    /* stat band */
     .statband{height:300px}
     .statband .num{font-size:64px;margin-bottom:14px}
     .statband .ar{font-size:18px}
     .statband .en{font-size:12px}
-
-    /* partners */
     .partners{padding:56px 0}
     .partners-row{gap:28px 32px;margin-top:32px}
     .partner-logo{font-size:17px}
     .partners-arrows{margin-top:24px}
-
-    /* showcase */
     .showcase{padding:64px 0}
     .showcase-grid{grid-template-columns:1fr;gap:28px}
     .show-card-red{padding:24px}
     .show-card-red h4{font-size:18px}
     .show-img-overlay{padding:20px}
     .show-img-overlay h4{font-size:15px}
-
-    /* footer */
     .footer-top{height:auto;padding:14px 0}
     .footer-top .container{flex-direction:column;align-items:flex-start;gap:10px}
     .footer-top img{height:16px}
@@ -630,8 +530,8 @@
   }
   @media (max-width:380px){
     .hero-title{font-size:26px}
-    .strip-stat .num{font-size:46px}
-    .strip-headline{font-size:18px}
+    .split-headline{font-size:22px}
+    .split-stat .num{font-size:46px}
     .upd-card-red h3{font-size:20px}
     .statband .num{font-size:54px}
   }
@@ -639,7 +539,7 @@
 </head>
 <body>
 
-<!-- ─────────── 1. HEADER ─────────── -->
+<!-- 1. HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <a href="#" class="logo-wrap" aria-label="راوي برس">
@@ -652,6 +552,7 @@
       <a href="#" class="nav-link">تواصل معنا</a>
       <div class="cta-row">
         <a href="#" class="pill pill-black">منطقة العميل</a>
+        <a href="#" class="pill pill-red">تجربة مجانية</a>
       </div>
     </nav>
     <button class="menu-btn" id="menu-btn" aria-label="القائمة" aria-controls="mobile-drawer" aria-expanded="false">
@@ -660,14 +561,12 @@
   </div>
 </header>
 
-<!-- ─────────── MOBILE DRAWER ─────────── -->
+<!-- mobile drawer -->
 <div class="menu-overlay" id="menu-overlay" aria-hidden="true"></div>
 <aside class="drawer" id="mobile-drawer" aria-hidden="true">
   <div class="drawer-head">
     <img src="assets/logo-color.png" alt="Rawi Press" />
-    <button class="drawer-close" id="drawer-close" aria-label="إغلاق">
-      <i data-lucide="x"></i>
-    </button>
+    <button class="drawer-close" id="drawer-close" aria-label="إغلاق"><i data-lucide="x"></i></button>
   </div>
   <nav class="drawer-nav">
     <a href="#">الخدمات <span class="arr">←</span></a>
@@ -676,18 +575,17 @@
     <a href="#">تواصل معنا <span class="arr">←</span></a>
   </nav>
   <div class="drawer-cta">
-    <a href="#" class="pill pill-red">ابدأ تجربتك الآن</a>
+    <a href="#" class="pill pill-red">تجربة مجانية</a>
     <a href="#" class="pill pill-black">منطقة العميل</a>
   </div>
 </aside>
 
-<!-- ─────────── 2. HERO SLIDER ─────────── -->
+<!-- 2. HERO SLIDER -->
 <section class="hero" id="hero">
   <div class="hero-slide active" data-idx="0" style="background-image:url('https://admin.rawipress.com/media/244/XsUz5L44o1ajslarsiEVxHkOQOw0zZPW06tC5mHY.png')"></div>
   <div class="hero-slide" data-idx="1" style="background-image:url('https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg')"></div>
   <div class="hero-slide" data-idx="2" style="background-image:url('https://admin.rawipress.com/media/243/WXD80vUIys4sY8UJSutO6PKsMkQB7GIrvKRK5j2X.jpg')"></div>
   <div class="hero-slide" data-idx="3" style="background-image:url('https://admin.rawipress.com/media/264/kTpQ0Gw2pOffQn5nnSTm1RvSmlZPZcDdvuvD5hZp.jpg')"></div>
-
   <div class="hero-content">
     <div class="hero-eyebrow lat" id="hero-eyebrow">RAWI PRESS · 01 / 04</div>
     <h1 class="hero-title" id="hero-title">لسنا مجرد ناقلي أخبار، نحن صنّاع القصة</h1>
@@ -696,7 +594,6 @@
       <a href="#" class="pill pill-red pill-cta">ابدأ تجربتك الآن</a>
     </div>
   </div>
-
   <div class="hero-dots" id="hero-dots">
     <button class="hero-dot active" data-i="0" aria-label="slide 1"></button>
     <button class="hero-dot" data-i="1" aria-label="slide 2"></button>
@@ -705,36 +602,36 @@
   </div>
 </section>
 
-<!-- ─────────── 3. COMPACT STAT STRIP ─────────── -->
-<section class="strip" id="strip">
-  <div class="strip-inner">
-    <div class="strip-stat">
-      <div class="num" id="split-num">5min</div>
-      <div class="label" id="split-label">الوقت من الحدث للبث<span class="lat">EVENT TO BROADCAST</span></div>
-    </div>
-    <div class="strip-mid">
-      <div class="strip-meta">
-        <span class="pulse"></span>
-        <span class="lat">LIVE NEWSROOM</span>
-        <span class="sep">/</span>
-        <span>غرفة الأخبار · الرياض</span>
-      </div>
-      <h2 class="strip-headline" id="split-headline">
+<!-- 3. DIAGONAL SPLIT -->
+<section class="split" id="split">
+  <div class="split-text">
+    <div class="split-text-inner">
+      <div class="split-eyebrow"><span>راوي ينقل القصة · </span><span class="lat">RAWI TELLS THE STORY</span><span class="dot">·</span></div>
+      <h2 class="split-headline" id="split-headline">
         محتوى إخباري احترافي يضع جمهورك في <span class="accent">قلب كل قصة.</span>
       </h2>
-    </div>
-    <div class="strip-right">
-      <a href="#" class="pill pill-red pill-cta">تعرّف على الفرق الذي يصنعه راوي ←</a>
-      <div class="strip-dots" id="split-dots">
-        <button class="strip-dot active" data-i="0" aria-label="1"></button>
-        <button class="strip-dot" data-i="1" aria-label="2"></button>
-        <button class="strip-dot" data-i="2" aria-label="3"></button>
+      <div class="split-body" id="split-body">
+        <p>من اللحظات التي يشاهدها العالم إلى التغطيات المخصصة، نقدّم القصص التي يطلبها جمهورك.</p>
+        <p>محتوانا يغطي أكثر من ٤٠ نوع من الأحداث، شامل اللقطات الحصرية، الأخبار العاجلة، معاينات المباريات، وملفات الشخصيات.</p>
+      </div>
+      <div class="split-stat">
+        <div class="num" id="split-num">5min</div>
+        <div class="label" id="split-label">الوقت من الحدث للبث<span class="lat">EVENT TO BROADCAST</span></div>
+      </div>
+      <div class="split-cta-row">
+        <a href="#" class="pill pill-red pill-cta">تعرّف على الفرق الذي يصنعه راوي ←</a>
+        <div class="split-dots" id="split-dots">
+          <button class="split-dot active" data-i="0" aria-label="1"></button>
+          <button class="split-dot" data-i="1" aria-label="2"></button>
+          <button class="split-dot" data-i="2" aria-label="3"></button>
+        </div>
       </div>
     </div>
   </div>
+  <div class="split-img" id="split-img" style="background-image:url('https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg')"></div>
 </section>
 
-<!-- ─────────── 4. SERVICES ─────────── -->
+<!-- 4. SERVICES -->
 <section class="services">
   <div class="container">
     <div class="section-eyebrow"><span>خدماتنا · </span><span class="lat">OUR SERVICES</span><span class="dot">·</span></div>
@@ -784,7 +681,7 @@
   </div>
 </section>
 
-<!-- ─────────── 5. TICKER ─────────── -->
+<!-- 5. TICKER -->
 <div class="ticker" aria-label="آخر الإصدارات">
   <div class="ticker-label">آخر الإصدارات</div>
   <div class="ticker-track" id="ticker-track">
@@ -792,7 +689,6 @@
     <span class="ticker-item">سباقات — تغطية الدرعية إي بري الكاملة متوفرة <span class="red-dot">·</span> <span class="ts">منذ ساعتين</span></span>
     <span class="ticker-item">رؤية 2030 — لقطات حصرية لمشروع القدية <span class="red-dot">·</span> <span class="ts">منذ 3 ساعات</span></span>
     <span class="ticker-item">ترفيه — افتتاح موسم الرياض في صور <span class="red-dot">·</span> <span class="ts">منذ 5 ساعات</span></span>
-    <!-- duplicate for seamless loop -->
     <span class="ticker-item">كرة القدم — قمة النصر × الاتحاد جاهزة للتحميل <span class="red-dot">·</span> <span class="ts">منذ ساعة</span></span>
     <span class="ticker-item">سباقات — تغطية الدرعية إي بري الكاملة متوفرة <span class="red-dot">·</span> <span class="ts">منذ ساعتين</span></span>
     <span class="ticker-item">رؤية 2030 — لقطات حصرية لمشروع القدية <span class="red-dot">·</span> <span class="ts">منذ 3 ساعات</span></span>
@@ -800,7 +696,7 @@
   </div>
 </div>
 
-<!-- ─────────── 6. RAWI UPDATES ─────────── -->
+<!-- 6. RAWI UPDATES -->
 <section class="updates">
   <div class="container">
     <div class="updates-head">
@@ -809,8 +705,6 @@
       </div>
       <a href="#" class="updates-more">المزيد <span class="lat">More →</span></a>
     </div>
-
-    <!-- row 1 -->
     <div class="updates-grid" style="margin-bottom:20px">
       <div class="upd-card upd-card-red span2">
         <div class="brandmark"><img src="assets/logo-white.png" alt=""></div>
@@ -834,8 +728,6 @@
         </div>
       </div>
     </div>
-
-    <!-- row 2 events -->
     <div class="updates-grid">
       <div class="event-card">
         <div class="event-img" style="background-image:url('https://admin.rawipress.com/media/261/kBo41tiM4gbAMRFIXd6zvRUsx2sD4Ri52yjzGWhM.jpg')"></div>
@@ -877,7 +769,7 @@
   </div>
 </section>
 
-<!-- ─────────── 7. STAT BAND ─────────── -->
+<!-- 7. STAT BAND -->
 <section class="statband" style="background-image:url('https://admin.rawipress.com/media/244/XsUz5L44o1ajslarsiEVxHkOQOw0zZPW06tC5mHY.png')">
   <div class="container">
     <div class="num lat">+10,000</div>
@@ -886,7 +778,7 @@
   </div>
 </section>
 
-<!-- ─────────── 8. PARTNERS ─────────── -->
+<!-- 8. PARTNERS -->
 <section class="partners">
   <div class="container">
     <div class="section-eyebrow center">
@@ -909,11 +801,10 @@
   </div>
 </section>
 
-<!-- ─────────── 9. SHOWCASE ─────────── -->
+<!-- 9. SHOWCASE -->
 <section class="showcase">
   <div class="container">
     <div class="showcase-grid">
-
       <div class="show-card">
         <div class="show-head"><span class="lbl lat">INSIGHTS</span><a href="#" class="lat">More →</a></div>
         <div class="show-body">
@@ -930,7 +821,6 @@
           <h5>نظرة جديدة، التزام مستمر: تعرّف على راوي الجديد</h5>
         </div>
       </div>
-
       <div class="show-card">
         <div class="show-head"><span class="lbl lat">CONTENT</span><a href="#" class="lat">More →</a></div>
         <div class="show-body">
@@ -939,7 +829,6 @@
           <span class="ts">اليوم، 10:20 صباحًا</span>
         </div>
       </div>
-
       <div class="show-card">
         <div class="show-head"><span class="lbl lat">X</span><a href="#" class="lat">Follow us →</a></div>
         <div class="show-body">
@@ -952,7 +841,6 @@
           </div>
         </div>
       </div>
-
       <div class="show-card">
         <div class="show-head"><span class="lbl lat">ABOUT US</span><a href="#" class="lat">More →</a></div>
         <div class="show-body">
@@ -963,12 +851,11 @@
           <p>شريكك الإعلامي العالمي بمعرفة محلية عميقة.</p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ─────────── 10. FOOTER ─────────── -->
+<!-- 10. FOOTER -->
 <footer class="footer">
   <div class="footer-top">
     <div class="container">
@@ -976,7 +863,6 @@
       <img src="assets/logo-white.png" alt="Rawi Press">
     </div>
   </div>
-
   <div class="footer-main">
     <div class="container">
       <div class="footer-grid">
@@ -985,7 +871,6 @@
           <p class="tagline">نشر المحتوى الإخباري الجاهز للبث · من الرياض إلى المنطقة.</p>
           <p class="copy">© 2026 راوي برس · جميع الحقوق محفوظة</p>
         </div>
-
         <div>
           <h4>الخدمات · <span class="lat">SERVICES</span></h4>
           <ul>
@@ -996,7 +881,6 @@
             <li><a href="#">التغطيات الحية</a></li>
           </ul>
         </div>
-
         <div>
           <h4>الأخبار · <span class="lat">ABOUT</span></h4>
           <ul>
@@ -1006,7 +890,6 @@
             <li><a href="#">الوظائف</a></li>
           </ul>
         </div>
-
         <div>
           <h4>تواصل معنا · <span class="lat">CONTACT</span></h4>
           <div class="footer-contact-block">
@@ -1029,7 +912,6 @@
       </div>
     </div>
   </div>
-
   <div class="footer-bottom">
     <div class="container">
       <div class="links">
@@ -1046,10 +928,9 @@
 </footer>
 
 <script>
-  // lucide
   if (window.lucide) lucide.createIcons();
 
-  // ─── hero slider ───
+  // hero slider
   (function(){
     const slides = document.querySelectorAll('.hero-slide');
     const dots   = document.querySelectorAll('.hero-dot');
@@ -1062,8 +943,7 @@
       'محتوى جاهز للبث · مدعوم بذكاء اصطناعي عربي',
       'شريكك الإعلامي من قلب الرياض'
     ];
-    let i = 0;
-    let timer;
+    let i = 0, timer;
     function go(n){
       i = (n + total) % total;
       slides.forEach((s,k)=>s.classList.toggle('active', k===i));
@@ -1074,30 +954,55 @@
     }
     function start(){ timer = setInterval(()=>go(i+1), 6000); }
     function reset(){ clearInterval(timer); start(); }
-    dots.forEach(d=>d.addEventListener('click', ()=>{
-      go(parseInt(d.dataset.i));
-      reset();
-    }));
+    dots.forEach(d=>d.addEventListener('click', ()=>{ go(parseInt(d.dataset.i)); reset(); }));
     start();
   })();
 
-  // ─── split slider ───
+  // diagonal split slider
   (function(){
     const headlineEl = document.getElementById('split-headline');
-    const numEl   = document.getElementById('split-num');
-    const labelEl = document.getElementById('split-label');
-    const dots    = document.querySelectorAll('.strip-dot');
+    const bodyEl     = document.getElementById('split-body');
+    const numEl      = document.getElementById('split-num');
+    const labelEl    = document.getElementById('split-label');
+    const imgEl      = document.getElementById('split-img');
+    const dots       = document.querySelectorAll('.split-dot');
     const states = [
-      { headline:'محتوى إخباري احترافي يضع جمهورك في {قلب كل قصة.}', num:'5min', label:'الوقت من الحدث للبث' },
-      { headline:'مكتبة محتوى {جاهزة للبث يومياً} لغرف أخبار المنطقة.', num:'100+', label:'مادة جاهزة للبث يومياً' },
-      { headline:'تغطية {مستمرة من قلب الرياض} طوال أيام الأسبوع.', num:'24/7', label:'تغطية مستمرة من الرياض' }
+      {
+        headline:'محتوى إخباري احترافي يضع جمهورك في {قلب كل قصة.}',
+        body:[
+          'من اللحظات التي يشاهدها العالم إلى التغطيات المخصصة، نقدّم القصص التي يطلبها جمهورك.',
+          'محتوانا يغطي أكثر من ٤٠ نوع من الأحداث، شامل اللقطات الحصرية، الأخبار العاجلة، معاينات المباريات، وملفات الشخصيات.'
+        ],
+        num:'5min', label:'الوقت من الحدث للبث', labelLat:'EVENT TO BROADCAST',
+        img:'https://admin.rawipress.com/media/256/DiX5LpAgLUeOBU7zfzZnuzWPcjzCzohYjkbXnNyx.jpg'
+      },
+      {
+        headline:'مكتبة محتوى {جاهزة للبث يومياً} لغرف أخبار المنطقة.',
+        body:[
+          'فيديو مقطوع، نسخ متعددة الأبعاد، ولقطات وصفية جاهزة للنشر — تصلك مع كل تحديث.',
+          'فرقنا التحريرية تعمل على مدار الساعة لتزويد شركائنا بمواد منسقة ومدققة جاهزة للبث الفوري.'
+        ],
+        num:'100+', label:'مادة جاهزة للبث يومياً', labelLat:'PUBLISH-READY DAILY',
+        img:'https://admin.rawipress.com/media/243/WXD80vUIys4sY8UJSutO6PKsMkQB7GIrvKRK5j2X.jpg'
+      },
+      {
+        headline:'تغطية {مستمرة من قلب الرياض} طوال أيام الأسبوع.',
+        body:[
+          'غرفة أخبار حية تنقل الحدث لحظة بلحظة، من الأحداث الرياضية الكبرى إلى الفعاليات الثقافية.',
+          'شبكة مراسلين موزعة على المنطقة تضمن تغطية شاملة وموثوقة في الوقت الحقيقي.'
+        ],
+        num:'24/7', label:'تغطية مستمرة من الرياض', labelLat:'LIVE FROM RIYADH',
+        img:'https://admin.rawipress.com/media/264/kTpQ0Gw2pOffQn5nnSTm1RvSmlZPZcDdvuvD5hZp.jpg'
+      }
     ];
     let i = 0, timer;
     function render(){
       const s = states[i];
       headlineEl.innerHTML = s.headline.replace(/\{(.+?)\}/, '<span class="accent">$1</span>');
+      bodyEl.innerHTML = s.body.map(p=>`<p>${p}</p>`).join('');
       numEl.textContent = s.num;
-      labelEl.textContent = s.label;
+      labelEl.innerHTML = `${s.label}<span class="lat">${s.labelLat}</span>`;
+      imgEl.style.backgroundImage = `url('${s.img}')`;
       dots.forEach((d,k)=>d.classList.toggle('active', k===i));
     }
     function go(n){ i = (n + states.length) % states.length; render(); }
@@ -1107,7 +1012,7 @@
     start();
   })();
 
-  // ─── mobile drawer ───
+  // mobile drawer
   (function(){
     const btn      = document.getElementById('menu-btn');
     const closeBtn = document.getElementById('drawer-close');
@@ -1137,15 +1042,13 @@
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
   })();
 
-  // ─── riyadh clock ───
+  // riyadh clock
   (function(){
     const el = document.getElementById('riyadh-clock');
     if(!el) return;
     function tick(){
       const now = new Date();
-      const t = new Intl.DateTimeFormat('en-GB', {
-        timeZone:'Asia/Riyadh', hour:'2-digit', minute:'2-digit', hour12:false
-      }).format(now);
+      const t = new Intl.DateTimeFormat('en-GB', { timeZone:'Asia/Riyadh', hour:'2-digit', minute:'2-digit', hour12:false }).format(now);
       el.textContent = `RUH ${t}`;
     }
     tick();
